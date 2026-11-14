@@ -378,6 +378,7 @@ class AndroidTvDeviceManagement extends import_dm_utils.DeviceManagement {
         connection: {
           type: "select",
           label: import_dm_texts.DM_TEXTS.deviceType,
+          help: import_dm_texts.DM_TEXTS.connectionHelp,
           options: [
             { label: import_dm_texts.DM_TEXTS.connRemote, value: "remote" },
             { label: import_dm_texts.DM_TEXTS.connRemoteAdb, value: "remote_adb" },

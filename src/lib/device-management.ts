@@ -465,6 +465,7 @@ export class AndroidTvDeviceManagement extends DeviceManagement<AdapterInstance>
                 connection: {
                     type: 'select',
                     label: T.deviceType,
+                    help: T.connectionHelp,
                     options: [
                         { label: T.connRemote, value: 'remote' },
                         { label: T.connRemoteAdb, value: 'remote_adb' },
