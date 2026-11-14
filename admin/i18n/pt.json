@@ -7,9 +7,9 @@
     "ipHelp": "Indicado nas definições de rede do dispositivo",
     "Enabled": "Ativado",
     "Device type": "Tipo de dispositivo",
-    "connRemote": "Android TV / Google TV (por ex. NVIDIA SHIELD)",
-    "connRemoteAdb": "Android TV / Google TV + info de reprodução (título, pausa)",
-    "connAdb": "Amazon Fire TV (ou outro dispositivo sem emparelhamento)",
+    "connRemote": "Android TV / Google TV – padrão",
+    "connRemoteAdb": "Android TV / Google TV – com título e reproduzir/pausa (requer ADB)",
+    "connAdb": "Amazon Fire TV",
     "Current app & text input": "App atual e entrada de texto",
     "enableImeTooltip": "Desative apenas se a TV mostrar sempre 'Usar teclado no dispositivo móvel'.",
     "ADB port": "Porta ADB",
@@ -23,7 +23,7 @@
     "adbSecurity": "Nota: com a depuração ativa, outros dispositivos na sua rede doméstica também podem aceder à TV. Use apenas na sua própria rede de confiança.",
     "Status": "Estado",
     "App favorites": "Apps favoritas",
-    "appsHelp": "Apps que quer iniciar com um clique. Cada entrada torna-se um botão em cada dispositivo. Introduza o link web da app (por ex. https://www.netflix.com/title). Apps sem link podem ser indicadas pelo ID (por ex. Emby: com.mb.android) – funciona no Fire TV e com „+ info de reprodução“.",
+    "appsHelp": "Apps que quer iniciar com um clique. Cada entrada torna-se um botão em cada dispositivo. Introduza o link web da app (por ex. https://www.netflix.com/title). Apps sem link podem ser indicadas pelo ID (por ex. Emby: com.mb.android) – funciona no Fire TV e com “com título e reproduzir/pausa”.",
     "Link or app ID": "Link ou ID da app",
     "Options": "Opções",
     "Update playback info every": "Atualizar info de reprodução a cada",
@@ -40,5 +40,6 @@
     "wolMacHelp": "Opcional, só necessário para ligar o dispositivo a partir do modo de espera profundo. Indicado nas definições de rede do dispositivo ou no router (com cabo: o MAC da porta LAN)",
     "Wake-on-LAN broadcast address": "Endereço de broadcast Wake-on-LAN",
     "wolBroadcastHelp": "Só necessário se o dispositivo estiver noutra rede (p. ex. 192.168.20.255)",
-    "wolMacInvalid": "Endereço MAC inválido. Formato: aa:bb:cc:dd:ee:ff"
+    "wolMacInvalid": "Endereço MAC inválido. Formato: aa:bb:cc:dd:ee:ff",
+    "connectionHelp": "Padrão: ligar/desligar, apps e botões do comando – introduzir uma vez um código mostrado na TV. Com título e reproduzir/pausa e para Fire TV: ativar uma opção de programador no dispositivo (ver guia)."
 }

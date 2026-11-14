@@ -7,9 +7,9 @@
     "ipHelp": "Widoczny w ustawieniach sieci urządzenia",
     "Enabled": "Włączone",
     "Device type": "Typ urządzenia",
-    "connRemote": "Android TV / Google TV (np. NVIDIA SHIELD)",
-    "connRemoteAdb": "Android TV / Google TV + informacje o odtwarzaniu (tytuł, pauza)",
-    "connAdb": "Amazon Fire TV (lub inne urządzenie bez parowania)",
+    "connRemote": "Android TV / Google TV – standard",
+    "connRemoteAdb": "Android TV / Google TV – z tytułem i odtwarzaniem/pauzą (wymaga ADB)",
+    "connAdb": "Amazon Fire TV",
     "Current app & text input": "Bieżąca aplikacja i wpisywanie tekstu",
     "enableImeTooltip": "Wyłącz tylko wtedy, gdy telewizor ciągle pokazuje „Użyj klawiatury na urządzeniu mobilnym”.",
     "ADB port": "Port ADB",
@@ -23,7 +23,7 @@
     "adbSecurity": "Uwaga: przy włączonym debugowaniu także inne urządzenia w sieci domowej mają dostęp do telewizora. Używaj tylko we własnej, zaufanej sieci.",
     "Status": "Status",
     "App favorites": "Ulubione aplikacje",
-    "appsHelp": "Aplikacje uruchamiane jednym kliknięciem. Każdy wpis staje się przyciskiem przy każdym urządzeniu. Wpisz link internetowy aplikacji (np. https://www.netflix.com/title). Aplikacje bez linku można wpisać za pomocą ID (np. Emby: com.mb.android) – działa to na Fire TV i z „+ informacje o odtwarzaniu”.",
+    "appsHelp": "Aplikacje uruchamiane jednym kliknięciem. Każdy wpis staje się przyciskiem przy każdym urządzeniu. Wpisz link internetowy aplikacji (np. https://www.netflix.com/title). Aplikacje bez linku można wpisać za pomocą ID (np. Emby: com.mb.android) – działa to na Fire TV i z „z tytułem i odtwarzaniem/pauzą”.",
     "Link or app ID": "Link lub ID aplikacji",
     "Options": "Opcje",
     "Update playback info every": "Aktualizuj informacje o odtwarzaniu co",
@@ -40,5 +40,6 @@
     "wolMacHelp": "Opcjonalnie, potrzebny tylko do włączenia urządzenia z głębokiego czuwania. Podany w ustawieniach sieci urządzenia lub w routerze (przy kablu: MAC portu LAN)",
     "Wake-on-LAN broadcast address": "Adres rozgłoszeniowy Wake-on-LAN",
     "wolBroadcastHelp": "Potrzebne tylko, gdy urządzenie jest w innej sieci (np. 192.168.20.255)",
-    "wolMacInvalid": "Nieprawidłowy adres MAC. Format: aa:bb:cc:dd:ee:ff"
+    "wolMacInvalid": "Nieprawidłowy adres MAC. Format: aa:bb:cc:dd:ee:ff",
+    "connectionHelp": "Standard: włączanie/wyłączanie, aplikacje i przyciski pilota – raz wpisać kod wyświetlony na telewizorze. Z tytułem i odtwarzaniem/pauzą oraz dla Fire TV: włączyć opcję programisty na urządzeniu (zobacz instrukcję)."
 }

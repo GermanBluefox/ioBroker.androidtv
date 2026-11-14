@@ -82,6 +82,7 @@
                             "type": "select",
                             "attr": "connection",
                             "label": "Device type",
+                            "help": "connectionHelp",
                             "default": "remote",
                             "newLine": true,
                             "options": [

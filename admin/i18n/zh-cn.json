@@ -7,9 +7,9 @@
     "ipHelp": "可在设备的网络设置中找到",
     "Enabled": "启用",
     "Device type": "设备类型",
-    "connRemote": "Android TV / Google TV（如 NVIDIA SHIELD）",
-    "connRemoteAdb": "Android TV / Google TV + 播放信息（标题、播放/暂停）",
-    "connAdb": "Amazon Fire TV（或其他无需配对的设备）",
+    "connRemote": "Android TV / Google TV – 标准",
+    "connRemoteAdb": "Android TV / Google TV – 显示标题和播放/暂停（需要 ADB）",
+    "connAdb": "Amazon Fire TV",
     "Current app & text input": "当前应用和文本输入",
     "enableImeTooltip": "仅当电视一直显示“使用移动设备上的键盘”时才关闭。",
     "ADB port": "ADB 端口",
@@ -23,7 +23,7 @@
     "adbSecurity": "注意：开启调试后，家庭网络中的其他设备也能访问电视。请仅在自己可信的网络中使用。",
     "Status": "状态",
     "App favorites": "收藏应用",
-    "appsHelp": "希望一键启动的应用。每个条目都会在每台设备上生成一个按钮。请填写应用的网页链接（如 https://www.netflix.com/title）。没有链接的应用可填写应用 ID（如 Emby：com.mb.android）——适用于 Fire TV 和“+ 播放信息”。",
+    "appsHelp": "希望一键启动的应用。每个条目都会在每台设备上生成一个按钮。请填写应用的网页链接（如 https://www.netflix.com/title）。没有链接的应用可填写应用 ID（如 Emby：com.mb.android）——适用于 Fire TV 和“显示标题和播放/暂停”。",
     "Link or app ID": "链接或应用 ID",
     "Options": "选项",
     "Update playback info every": "播放信息更新间隔",
@@ -40,5 +40,6 @@
     "wolMacHelp": "可选，仅在需要从深度待机唤醒设备时使用。可在设备的网络设置或路由器中找到（有线连接时为 LAN 接口的 MAC）",
     "Wake-on-LAN broadcast address": "网络唤醒广播地址",
     "wolBroadcastHelp": "仅当设备位于其他网络时需要（例如 192.168.20.255）",
-    "wolMacInvalid": "MAC 地址无效。格式：aa:bb:cc:dd:ee:ff"
+    "wolMacInvalid": "MAC 地址无效。格式：aa:bb:cc:dd:ee:ff",
+    "connectionHelp": "标准：开关机、应用和遥控按键——只需输入一次电视上显示的代码。显示标题和播放/暂停以及 Fire TV：需在设备上开启一个开发者选项（见说明）。"
 }
