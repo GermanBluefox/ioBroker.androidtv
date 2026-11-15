@@ -87,7 +87,7 @@ App IDs work on Fire TV and with the device type *with title and play/pause*. A 
 - **SHIELD turns itself on again after switching off**: the TV wakes it via HDMI-CEC while it shows the SHIELD's input. Switch the TV to another input first, or switch off the TV. With ADB the adapter detects this and shows `power` correctly.
 - **TV keeps showing "Use keyboard on mobile device"**: expert mode › untick *Current app & text input* for this device.
 - **Volume shows nothing**: volume is controlled by the TV / AV receiver (HDMI-CEC); the volume buttons still work.
-- **Prime Video shows only "PrimeVideo" as title**: the app does not pass the title on; play/pause and position work.
+- **No title for Netflix or Prime Video** (Prime Video shows only "PrimeVideo"): these apps do not pass the title on to Android; play/pause and position work. YouTube shows title and channel.
 
 ## Technical details
 
@@ -120,7 +120,7 @@ App IDs work on Fire TV and with the device type *with title and play/pause*. A 
 ### Known limitations
 
 - The SHIELD accepts only web links via the remote protocol; app IDs are started via ADB.
-- Title/subtitle come from the app; apps that do not report them show only their name (e.g. Prime Video) or nothing. No duration or cover.
+- Title/subtitle come from the app; apps that do not report them show only their name (Prime Video) or nothing (Netflix); YouTube reports title and channel. No duration or cover.
 - Absolute volume cannot be set. Google Cast is not supported – use the [chromecast adapter](https://github.com/iobroker-community-adapters/ioBroker.chromecast).
 
 ### Credits and disclaimer

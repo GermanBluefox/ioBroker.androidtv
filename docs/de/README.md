@@ -78,7 +78,7 @@ App-Kennungen funktionieren beim Fire TV und mit dem Gerätetyp *mit Titel und P
 - **Die SHIELD schaltet sich nach dem Ausschalten wieder ein**: Der Fernseher weckt sie per HDMI-CEC, solange er ihren Eingang zeigt. Vorher auf einen anderen Eingang umschalten oder den Fernseher ausschalten. Mit ADB erkennt der Adapter das und zeigt `power` richtig an.
 - **Der Fernseher zeigt ständig „Tastatur auf Mobilgerät verwenden“**: Expertenmodus › beim Gerät *Aktuelle App & Texteingabe* abwählen.
 - **Lautstärke zeigt nichts an**: Die Lautstärke regelt der Fernseher / AV-Receiver (HDMI-CEC); die Lautstärke-Tasten funktionieren trotzdem.
-- **Prime Video zeigt als Titel nur „PrimeVideo“**: Die App gibt den Titel nicht weiter; Play/Pause und Position funktionieren.
+- **Kein Titel bei Netflix oder Prime Video** (Prime Video zeigt nur „PrimeVideo“): Diese Apps geben den Titel nicht an Android weiter; Play/Pause und Position funktionieren. YouTube zeigt Titel und Kanal.
 
 Technische Details, alle Datenpunkte und bekannte Einschränkungen: [README (englisch)](../../README.md#technical-details).
 
