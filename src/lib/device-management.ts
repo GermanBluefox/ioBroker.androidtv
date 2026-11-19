@@ -152,6 +152,9 @@ export class AndroidTvDeviceManagement extends DeviceManagement<AdapterInstance>
     private deviceInfo(entry: DmDeviceEntry): DeviceInfo<string> {
         const base = `${this.adapter.namespace}.${entry.id}`;
         const enabled = entry.config.enabled !== false;
+        // @KI_HINWEIS: Deaktiviert = kein rotes "getrennt"-Symbol (Feldtest: wirkte wie ein Fehler);
+        // ausgegraute Karte + Schalter zeigen den Zustand bereits.
+        const notRunningStatus = enabled ? ('disconnected' as const) : undefined;
         return {
             id: entry.id,
             identifier: entry.config.host,
@@ -175,7 +178,7 @@ export class AndroidTvDeviceManagement extends DeviceManagement<AdapterInstance>
                             }
                           : {}),
                   }
-                : 'disconnected',
+                : notRunningStatus,
             actions: this.deviceActions(entry, enabled),
             controls: entry.running ? this.deviceControls(entry, base) : undefined,
             customInfo: entry.running ? this.cardInfo(entry, base) : undefined,

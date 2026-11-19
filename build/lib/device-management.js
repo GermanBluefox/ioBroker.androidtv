@@ -95,6 +95,7 @@ class AndroidTvDeviceManagement extends import_dm_utils.DeviceManagement {
   deviceInfo(entry) {
     const base = `${this.adapter.namespace}.${entry.id}`;
     const enabled = entry.config.enabled !== false;
+    const notRunningStatus = enabled ? "disconnected" : void 0;
     return {
       id: entry.id,
       identifier: entry.config.host,
@@ -114,7 +115,7 @@ class AndroidTvDeviceManagement extends import_dm_utils.DeviceManagement {
             mapping: { true: import_dm_texts.DM_TEXTS.pairingRequired, false: false }
           }
         } : {}
-      } : "disconnected",
+      } : notRunningStatus,
       actions: this.deviceActions(entry, enabled),
       controls: entry.running ? this.deviceControls(entry, base) : void 0,
       customInfo: entry.running ? this.cardInfo(entry, base) : void 0,

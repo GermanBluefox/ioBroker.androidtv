@@ -1158,7 +1158,12 @@ class Androidtv extends utils.Adapter {
       isRetryablePairingError: (e) => e instanceof import_pairing.PairingError && (e.code === "wrongPin" || e.code === "invalidPin"),
       errorText: (e) => {
         var _a;
-        this.log.warn(`Device manager: ${(_a = e == null ? void 0 : e.message) != null ? _a : String(e)}`);
+        const message = `Device manager: ${(_a = e == null ? void 0 : e.message) != null ? _a : String(e)}`;
+        if (e instanceof import_pairing.PairingError) {
+          this.log.info(message);
+        } else {
+          this.log.warn(message);
+        }
         return this.errorText(e);
       },
       reconnect: (id) => {

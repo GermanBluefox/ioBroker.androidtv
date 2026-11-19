@@ -1298,7 +1298,14 @@ class Androidtv extends utils.Adapter {
             isRetryablePairingError: e =>
                 e instanceof PairingError && (e.code === 'wrongPin' || e.code === 'invalidPin'),
             errorText: e => {
-                this.log.warn(`Device manager: ${(e as Error)?.message ?? String(e)}`);
+                // @KI_HINWEIS: Erwartete Kopplungsfehler (Gerät aus, falscher Code) sieht der Nutzer bereits im Dialog →
+                // nur info, damit das Log keine Warnung meldet. Unerwartete Fehler bleiben eine Warnung.
+                const message = `Device manager: ${(e as Error)?.message ?? String(e)}`;
+                if (e instanceof PairingError) {
+                    this.log.info(message);
+                } else {
+                    this.log.warn(message);
+                }
                 return this.errorText(e);
             },
             reconnect: id => {
