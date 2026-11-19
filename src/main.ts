@@ -8,6 +8,7 @@ import { DEFAULT_ADB_PORT } from './lib/adb/client';
 import { appDisplayName } from './lib/app-names';
 import { AndroidTvDeviceManagement, type DmBridge, type DmDeviceEntry } from './lib/device-management';
 import { AdbDevice } from './lib/adb/device';
+import { COMMANDS, HELP } from './lib/help';
 import type { MediaInfo, PollResult } from './lib/adb/parsers';
 import {
     generateClientCertificate,
@@ -418,6 +419,7 @@ class Androidtv extends utils.Adapter {
         });
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
+        this.on('message', this.onMessage.bind(this));
         this.on('unload', this.onUnload.bind(this));
         this.deviceManagement = new AndroidTvDeviceManagement(this, this.dmBridge());
     }
@@ -1228,6 +1230,18 @@ class Androidtv extends utils.Adapter {
         device.wakePendingUntil = Date.now() + 90_000;
         device.remote?.reconnectNow();
         device.adb?.reconnectNow();
+    }
+
+    /**
+     * Answers `help`: the commands and states for AI agents, also while no device is connected. The `dm:*`
+     * commands are answered by the Device Manager.
+     *
+     * @param obj - Message
+     */
+    private onMessage(obj: ioBroker.Message): void {
+        if (obj?.command === 'help' && obj.callback) {
+            this.sendTo(obj.from, obj.command, { help: HELP, commands: COMMANDS }, obj.callback);
+        }
     }
 
     // ------------------------------------------------------------------------------------------------------------

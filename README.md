@@ -78,6 +78,10 @@ Tab **App favorites**: each entry becomes a button for every device. Enter the a
 
 App IDs work on Fire TV and with the device type *with title and play/pause*. A link that would only open the web browser is not started (hint in the log).
 
+## Messages for scripts and AI agents
+
+The devices are controlled through the data points above. `sendTo('androidtv.0', 'help', {})` answers a description of them for AI agents (e.g. ioBroker.pi-agent) and script authors: `{ help, commands }`, where `commands` lists every command of the instance with `write` (whether it changes something); the `dm:*` commands belong to the device manager.
+
 ## Problems & solutions
 
 - **"Pairing required"**: pair again (step 2) – needed after resetting the device.
@@ -145,6 +149,7 @@ Bugs and ideas: [issues](https://github.com/Schimi1983/ioBroker.androidtv/issues
 -->
 ### **WORK IN PROGRESS**
 
+- (@GermanBluefox) Added the message "help": a description of all messages and data points for AI agents (e.g. pi-agent), and `common.supportedMessages.help`
 - (Schimi) `currentAppName` shows "ORF ON" on Fire TV
 - (Schimi) Playback info: if several apps report playback, the app in the foreground wins; changes of the playback info are written to the debug log
 
