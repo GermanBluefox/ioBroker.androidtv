@@ -373,8 +373,22 @@ class AndroidTvDeviceManagement extends import_dm_utils.DeviceManagement {
     const schema = {
       type: "panel",
       items: {
-        name: { type: "text", label: import_dm_texts.DM_TEXTS.name, sm: 12 },
-        host: { type: "text", label: import_dm_texts.DM_TEXTS.host, help: import_dm_texts.DM_TEXTS.hostHelp, sm: 12 },
+        // @KI_HINWEIS: Validatoren direkt im Dialog (Idee aus PR #11, Voodoo2man); validate() prüft zusätzlich im Code.
+        name: {
+          type: "text",
+          label: import_dm_texts.DM_TEXTS.name,
+          validator: "data.name && data.name.trim().length > 0",
+          validatorNoSaveOnError: true,
+          sm: 12
+        },
+        host: {
+          type: "text",
+          label: import_dm_texts.DM_TEXTS.host,
+          help: import_dm_texts.DM_TEXTS.hostHelp,
+          validator: "data.host && data.host.trim().length > 0",
+          validatorNoSaveOnError: true,
+          sm: 12
+        },
         connection: {
           type: "select",
           label: import_dm_texts.DM_TEXTS.deviceType,
@@ -387,7 +401,14 @@ class AndroidTvDeviceManagement extends import_dm_utils.DeviceManagement {
           sm: 12
         },
         enabled: { type: "checkbox", label: import_dm_texts.DM_TEXTS.enabled, sm: 12 },
-        wolMac: { type: "text", label: import_dm_texts.DM_TEXTS.mac, help: import_dm_texts.DM_TEXTS.macHelp, sm: 12 },
+        wolMac: {
+          type: "text",
+          label: import_dm_texts.DM_TEXTS.mac,
+          help: import_dm_texts.DM_TEXTS.macHelp,
+          validator: "!data.wolMac || /^([0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}$/.test(data.wolMac.trim())",
+          validatorNoSaveOnError: true,
+          sm: 12
+        },
         enableIme: { type: "checkbox", label: import_dm_texts.DM_TEXTS.ime, hidden: "data.connection === 'adb'", sm: 12 },
         adbPort: {
           type: "number",
@@ -397,7 +418,22 @@ class AndroidTvDeviceManagement extends import_dm_utils.DeviceManagement {
           hidden: "data.connection === 'remote'",
           sm: 12
         },
-        wolBroadcast: { type: "text", label: import_dm_texts.DM_TEXTS.broadcast, sm: 12 }
+        wolBroadcast: { type: "text", label: import_dm_texts.DM_TEXTS.broadcast, sm: 12 },
+        // what to do on the device after saving (step texts from PR #11)
+        stepPair: { type: "staticText", text: import_dm_texts.DM_TEXTS.stepPair, hidden: "data.connection === 'adb'", sm: 12 },
+        stepAdbRemote: {
+          type: "staticText",
+          text: import_dm_texts.DM_TEXTS.stepAdbRemote,
+          hidden: "data.connection !== 'remote_adb'",
+          sm: 12
+        },
+        stepAdbFire: { type: "staticText", text: import_dm_texts.DM_TEXTS.stepAdbFire, hidden: "data.connection !== 'adb'", sm: 12 },
+        adbSecurity: {
+          type: "staticText",
+          text: import_dm_texts.DM_TEXTS.adbSecurity,
+          hidden: "data.connection === 'remote'",
+          sm: 12
+        }
       }
     };
     let data = { ...initial, connection: (_a = initial.connection) != null ? _a : "remote" };

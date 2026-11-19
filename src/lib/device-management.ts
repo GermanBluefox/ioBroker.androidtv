@@ -460,8 +460,22 @@ export class AndroidTvDeviceManagement extends DeviceManagement<AdapterInstance>
         const schema: JsonFormSchema = {
             type: 'panel',
             items: {
-                name: { type: 'text', label: T.name, sm: 12 },
-                host: { type: 'text', label: T.host, help: T.hostHelp, sm: 12 },
+                // @KI_HINWEIS: Validatoren direkt im Dialog (Idee aus PR #11, Voodoo2man); validate() prüft zusätzlich im Code.
+                name: {
+                    type: 'text',
+                    label: T.name,
+                    validator: 'data.name && data.name.trim().length > 0',
+                    validatorNoSaveOnError: true,
+                    sm: 12,
+                },
+                host: {
+                    type: 'text',
+                    label: T.host,
+                    help: T.hostHelp,
+                    validator: 'data.host && data.host.trim().length > 0',
+                    validatorNoSaveOnError: true,
+                    sm: 12,
+                },
                 connection: {
                     type: 'select',
                     label: T.deviceType,
@@ -474,7 +488,14 @@ export class AndroidTvDeviceManagement extends DeviceManagement<AdapterInstance>
                     sm: 12,
                 },
                 enabled: { type: 'checkbox', label: T.enabled, sm: 12 },
-                wolMac: { type: 'text', label: T.mac, help: T.macHelp, sm: 12 },
+                wolMac: {
+                    type: 'text',
+                    label: T.mac,
+                    help: T.macHelp,
+                    validator: '!data.wolMac || /^([0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}$/.test(data.wolMac.trim())',
+                    validatorNoSaveOnError: true,
+                    sm: 12,
+                },
                 enableIme: { type: 'checkbox', label: T.ime, hidden: "data.connection === 'adb'", sm: 12 },
                 adbPort: {
                     type: 'number',
@@ -485,6 +506,21 @@ export class AndroidTvDeviceManagement extends DeviceManagement<AdapterInstance>
                     sm: 12,
                 },
                 wolBroadcast: { type: 'text', label: T.broadcast, sm: 12 },
+                // what to do on the device after saving (step texts from PR #11)
+                stepPair: { type: 'staticText', text: T.stepPair, hidden: "data.connection === 'adb'", sm: 12 },
+                stepAdbRemote: {
+                    type: 'staticText',
+                    text: T.stepAdbRemote,
+                    hidden: "data.connection !== 'remote_adb'",
+                    sm: 12,
+                },
+                stepAdbFire: { type: 'staticText', text: T.stepAdbFire, hidden: "data.connection !== 'adb'", sm: 12 },
+                adbSecurity: {
+                    type: 'staticText',
+                    text: T.adbSecurity,
+                    hidden: "data.connection === 'remote'",
+                    sm: 12,
+                },
             },
         };
         let data: JsonFormData = { ...initial, connection: initial.connection ?? 'remote' };

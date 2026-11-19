@@ -11,7 +11,7 @@
 
 **🇩🇪 Deutsche Anleitung: [docs/de/README.md](docs/de/README.md)**
 
-Control your **NVIDIA SHIELD**, other **Android TV / Google TV** devices and **Amazon Fire TV** from ioBroker: switch on and off, start apps, press remote buttons and see what is playing – also on one page in the device manager.
+Control your **NVIDIA SHIELD**, other **Android TV / Google TV** devices and **Amazon Fire TV** from ioBroker: switch on and off, start apps, press remote buttons and see what is playing.
 
 Product pages: [NVIDIA SHIELD TV](https://www.nvidia.com/en-us/shield/), [Android TV / Google TV](https://www.android.com/tv/), [Amazon Fire TV](https://www.amazon.com/firetv).
 
@@ -21,7 +21,7 @@ Product pages: [NVIDIA SHIELD TV](https://www.nvidia.com/en-us/shield/), [Androi
 
 ### 1. Add the device
 
-Instance settings › tab **Devices** › **+**: enter a name and the **IP address** of the device (network settings of the device; best give it a fixed IP in your router). Then choose the **device type**:
+Instance settings › tab **Devices** › **Add device**: enter a name and the **IP address** of the device (network settings of the device; best give it a fixed IP in your router). Then choose the **device type**:
 
 | Device type | For | What it can do | What you do once |
 | --- | --- | --- | --- |
@@ -33,17 +33,17 @@ Not sure? Start with **standard** – you can switch later.
 
 ### 2. Connect
 
-**Standard:** switch the device on, click **Start pairing** in the device entry, enter the 6-character code from the TV and click **Confirm code**. Done – the status shows **Connected**.
+**Standard:** switch the device on, click **Pair device** on its card and enter the 6-character code from the TV. Done – the status dot on the card turns green.
 
-**With title and play/pause:** pair as above. Then on the device open **Settings › Device Preferences › Developer options** and switch on **Network debugging** (no developer options? *About* › click **Build** 7 times). Save the adapter settings and confirm **"Allow debugging?"** on the TV with **Always allow**.
+**With title and play/pause:** pair as above. Then on the device open **Settings › Device Preferences › Developer options** and switch on **Network debugging** (no developer options? *About* › click **Build** 7 times). Confirm **"Allow debugging?"** on the TV with **Always allow**.
 
-**Amazon Fire TV:** on the Fire TV open **Settings › My Fire TV › Developer options** and switch on **ADB debugging** (no developer options? *About* › click the device name 7 times). Save the adapter settings and confirm **"Allow USB debugging?"** on the TV with **Always allow**.
+**Amazon Fire TV:** on the Fire TV open **Settings › My Fire TV › Developer options** and switch on **ADB debugging** (no developer options? *About* › click the device name 7 times). Confirm **"Allow USB debugging?"** on the TV with **Always allow**.
 
 > ADB (debugging) also lets other devices in your network access the TV. Only use it in your own, trusted network.
 
 ### 3. Optional: switch on from deep standby
 
-Some devices (e.g. Fire TV) switch off their network in deep standby. Switch on **Wake on LAN** / **network standby** on the device and enter its **MAC address** in the device entry – take it from your router (with a cable: the MAC of the LAN port).
+Some devices (e.g. Fire TV) switch off their network in deep standby. Switch on **Wake on LAN** / **network standby** on the device and enter its **MAC address** in the device settings (gear button on its card) – take it from your router (with a cable: the MAC of the LAN port).
 
 ## Using the adapter
 
@@ -61,9 +61,9 @@ Each device appears as `androidtv.0.<name>`:
 
 Use them in scripts, Blockly, scenes or visualizations like any other data point.
 
-### Device manager (beta)
+### Devices tab
 
-Tab **Device manager (beta)** in the instance settings: every device as a card with status and the running app. The switch enables/disables the device, the controller button opens quick controls (on/off, mute, volume, play/pause, home), further buttons pair, reconnect, change settings or remove the device; **Add device** adds a new one. Changes are saved immediately and restart the instance – close an open settings page afterwards without saving.
+Every device is a card with status and the running app. The switch enables/disables the device, the controller button opens quick controls (on/off, mute, volume, play/pause, home), further buttons pair, reconnect, change the settings or remove the device. Changes are saved immediately and restart the instance – close the settings page afterwards without saving before you change anything else there.
 
 ### App favorites
 
@@ -145,7 +145,8 @@ Bugs and ideas: [issues](https://github.com/Schimi1983/ioBroker.androidtv/issues
 -->
 ### **WORK IN PROGRESS**
 
-- (Schimi) Device manager (beta): all devices as cards with status, quick controls, pairing, reconnect, settings and remove (new tab in the instance settings)
+- (Schimi, Voodoo2man) Devices are now managed as cards in the tab **Devices** (ioBroker device manager): status, quick controls, pairing, reconnect, settings and remove – replaces the device table
+- (Voodoo2man) Disabled devices no longer show the last online status
 - (Schimi) New data point `currentAppName`: readable name of the running app (e.g. "Netflix" instead of `com.netflix.ninja`)
 - (Schimi) `power` stays correct when the TV wakes the device again via HDMI-CEC right after switching it off (short check via ADB)
 - (Schimi) Clearer device type names in the settings ("standard", "with title and play/pause (ADB required)", "Amazon Fire TV") with a short explanation

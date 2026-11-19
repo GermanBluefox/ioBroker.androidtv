@@ -17,8 +17,16 @@ tests.integration(path.join(__dirname, '..'), {
                 obj.native.devices = [
                     { enabled: true, name: 'Test TV', host: '127.0.0.1', enableIme: true },
                     { enabled: true, name: 'Fire TV Küche', host: '127.0.0.2', connection: 'adb', adbPort: 5555 },
+                    { enabled: false, name: 'Old TV', host: '127.0.0.3' },
                 ];
                 await harness.objects.setObjectAsync(instanceId, obj);
+                // stale "connected" from an earlier run must be reset for the disabled device
+                await harness.objects.setObjectAsync('androidtv.0.Old_TV.info.connected', {
+                    type: 'state',
+                    common: { name: 'Connected', type: 'boolean', role: 'indicator.connected', read: true, write: false },
+                    native: {},
+                });
+                await harness.states.setStateAsync('androidtv.0.Old_TV.info.connected', { val: true, ack: true });
 
                 // First start generates the certificate and stores it in the adapter file storage
                 await harness.startAdapterAndWait();
@@ -77,12 +85,16 @@ tests.integration(path.join(__dirname, '..'), {
                 }
                 const list = await send('dm:loadDevices', {});
                 const ids = (list?.add ?? []).map(d => d.id).sort();
-                if (ids.join() !== 'Fire_TV_Kueche,Test_TV') {
+                if (ids.join() !== 'Fire_TV_Kueche,Old_TV,Test_TV') {
                     throw new Error(`device manager list invalid: ${JSON.stringify(list)}`);
                 }
                 const tv = list.add.find(d => d.id === 'Test_TV');
                 if (!tv.actions.some(a => a.id === 'enable/disable')) {
                     throw new Error('enable/disable action missing (switch on the card would be read-only)');
+                }
+                const oldConnected = await harness.states.getStateAsync('androidtv.0.Old_TV.info.connected');
+                if (oldConnected?.val !== false) {
+                    throw new Error(`disabled device still reported as connected: ${JSON.stringify(oldConnected)}`);
                 }
                 const controlState = await send('dm:deviceControlState', { deviceId: 'Test_TV', controlId: 'power' });
                 if (!controlState || controlState.result?.error || controlState.error) {

@@ -2,7 +2,7 @@
 
 # ioBroker.androidtv – Anleitung
 
-Steuere deine **NVIDIA SHIELD**, andere **Android-TV- / Google-TV-Geräte** und **Amazon Fire TV** aus ioBroker: ein- und ausschalten, Apps starten, Fernbedienungstasten drücken und sehen, was gerade läuft – auch auf einer Seite in der Geräteverwaltung.
+Steuere deine **NVIDIA SHIELD**, andere **Android-TV- / Google-TV-Geräte** und **Amazon Fire TV** aus ioBroker: ein- und ausschalten, Apps starten, Fernbedienungstasten drücken und sehen, was gerade läuft.
 
 Produktseiten: [NVIDIA SHIELD TV](https://www.nvidia.com/de-de/shield/), [Android TV / Google TV](https://www.android.com/intl/de_de/tv/), [Amazon Fire TV](https://www.amazon.de/firetv).
 
@@ -12,7 +12,7 @@ Produktseiten: [NVIDIA SHIELD TV](https://www.nvidia.com/de-de/shield/), [Androi
 
 ### 1. Gerät hinzufügen
 
-Instanz-Einstellungen › Reiter **Geräte** › **+**: Namen und **IP-Adresse** des Geräts eintragen (steht in den Netzwerkeinstellungen des Geräts; am besten im Router eine feste IP vergeben). Dann den **Gerätetyp** wählen:
+Instanz-Einstellungen › Reiter **Geräte** › **Gerät hinzufügen**: Namen und **IP-Adresse** des Geräts eintragen (steht in den Netzwerkeinstellungen des Geräts; am besten im Router eine feste IP vergeben). Dann den **Gerätetyp** wählen:
 
 | Gerätetyp | Für | Was geht | Was du einmalig machst |
 | --- | --- | --- | --- |
@@ -24,17 +24,17 @@ Unsicher? Mit **Standard** anfangen – umstellen geht jederzeit.
 
 ### 2. Verbinden
 
-**Standard:** Gerät einschalten, im Geräte-Eintrag **Kopplung starten** klicken, den 6-stelligen Code vom Fernseher eingeben und **Code bestätigen** klicken. Fertig – der Status zeigt **Verbunden**.
+**Standard:** Gerät einschalten, auf seiner Karte **Gerät koppeln** klicken und den 6-stelligen Code vom Fernseher eingeben. Fertig – der Statuspunkt auf der Karte wird grün.
 
-**Mit Titel und Play/Pause:** wie oben koppeln. Dann am Gerät **Einstellungen › Geräteeinstellungen › Entwickleroptionen** öffnen und **Netzwerk-Debugging** einschalten (keine Entwickleroptionen? *Info* › 7× auf **Build** klicken). Adapter-Einstellungen speichern und am Fernseher **„Debugging zulassen?“** mit **Immer zulassen** bestätigen.
+**Mit Titel und Play/Pause:** wie oben koppeln. Dann am Gerät **Einstellungen › Geräteeinstellungen › Entwickleroptionen** öffnen und **Netzwerk-Debugging** einschalten (keine Entwickleroptionen? *Info* › 7× auf **Build** klicken). Am Fernseher **„Debugging zulassen?“** mit **Immer zulassen** bestätigen.
 
-**Amazon Fire TV:** am Fire TV **Einstellungen › Mein Fire TV › Entwickleroptionen** öffnen und **ADB-Debugging** einschalten (keine Entwickleroptionen? *Info* › 7× auf den Gerätenamen klicken). Adapter-Einstellungen speichern und am Fernseher **„USB-Debugging zulassen?“** mit **Immer zulassen** bestätigen.
+**Amazon Fire TV:** am Fire TV **Einstellungen › Mein Fire TV › Entwickleroptionen** öffnen und **ADB-Debugging** einschalten (keine Entwickleroptionen? *Info* › 7× auf den Gerätenamen klicken). Am Fernseher **„USB-Debugging zulassen?“** mit **Immer zulassen** bestätigen.
 
 > Mit ADB (Debugging) können auch andere Geräte in deinem Netz auf den Fernseher zugreifen. Nur im eigenen, vertrauenswürdigen Netz verwenden.
 
 ### 3. Optional: aus dem tiefen Standby einschalten
 
-Manche Geräte (z. B. Fire TV) schalten im tiefen Standby ihr Netzwerk ab. Am Gerät **Wake on LAN** / **Netzwerk-Standby** einschalten und im Geräte-Eintrag die **MAC-Adresse** eintragen – am besten aus dem Router (bei Kabel: die MAC der LAN-Schnittstelle).
+Manche Geräte (z. B. Fire TV) schalten im tiefen Standby ihr Netzwerk ab. Am Gerät **Wake on LAN** / **Netzwerk-Standby** einschalten und in den Geräte-Einstellungen (Zahnrad auf der Karte) die **MAC-Adresse** eintragen – am besten aus dem Router (bei Kabel: die MAC der LAN-Schnittstelle).
 
 ## Bedienung
 
@@ -52,9 +52,9 @@ Jedes Gerät erscheint als `androidtv.0.<Name>`:
 
 Diese Datenpunkte nutzt du in Skripten, Blockly, Szenen oder Visualisierungen wie jeden anderen.
 
-### Geräteverwaltung (Beta)
+### Reiter Geräte
 
-Reiter **Geräteverwaltung (Beta)** in den Instanz-Einstellungen: jedes Gerät als Karte mit Status und laufender App. Der Schalter aktiviert/deaktiviert das Gerät, der Controller-Knopf öffnet die Schnellsteuerung (Ein/Aus, Stumm, Lautstärke, Wiedergabe/Pause, Startseite), weitere Knöpfe koppeln, verbinden neu, ändern die Einstellungen oder entfernen das Gerät; **Gerät hinzufügen** legt ein neues an. Änderungen werden sofort gespeichert und starten die Instanz neu – eine offene Einstellungsseite danach ohne Speichern schließen.
+Jedes Gerät ist eine Karte mit Status und laufender App. Der Schalter aktiviert/deaktiviert das Gerät, der Controller-Knopf öffnet die Schnellsteuerung (Ein/Aus, Stumm, Lautstärke, Wiedergabe/Pause, Startseite), weitere Knöpfe koppeln, verbinden neu, ändern die Einstellungen oder entfernen das Gerät. Änderungen werden sofort gespeichert und starten die Instanz neu – die Einstellungsseite danach ohne Speichern schließen, bevor du dort etwas anderes änderst.
 
 ### App-Favoriten
 

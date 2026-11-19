@@ -182,32 +182,6 @@ const MESSAGES = {
     uk: "\u0412\u0438\u043C\u043A\u043D\u0435\u043D\u043E",
     "zh-cn": "\u5DF2\u7981\u7528"
   },
-  statusUnsaved: {
-    en: "Not saved yet \u2013 pairing already works, the connection starts after saving",
-    de: "Noch nicht gespeichert \u2013 Koppeln geht schon, die Verbindung startet nach dem Speichern",
-    ru: "\u0415\u0449\u0451 \u043D\u0435 \u0441\u043E\u0445\u0440\u0430\u043D\u0435\u043D\u043E \u2013 \u0441\u043E\u043F\u0440\u044F\u0436\u0435\u043D\u0438\u0435 \u0443\u0436\u0435 \u0440\u0430\u0431\u043E\u0442\u0430\u0435\u0442, \u0441\u043E\u0435\u0434\u0438\u043D\u0435\u043D\u0438\u0435 \u043D\u0430\u0447\u043D\u0451\u0442\u0441\u044F \u043F\u043E\u0441\u043B\u0435 \u0441\u043E\u0445\u0440\u0430\u043D\u0435\u043D\u0438\u044F",
-    pt: "Ainda n\xE3o guardado \u2013 o emparelhamento j\xE1 funciona, a liga\xE7\xE3o come\xE7a depois de guardar",
-    nl: "Nog niet opgeslagen \u2013 koppelen werkt al, de verbinding start na het opslaan",
-    fr: "Pas encore enregistr\xE9 \u2013 l\u2019appairage fonctionne d\xE9j\xE0, la connexion d\xE9marre apr\xE8s l\u2019enregistrement",
-    it: "Non ancora salvato \u2013 l\u2019associazione funziona gi\xE0, la connessione parte dopo il salvataggio",
-    es: "A\xFAn no guardado \u2013 el emparejamiento ya funciona, la conexi\xF3n empieza al guardar",
-    pl: "Jeszcze nie zapisano \u2013 parowanie ju\u017C dzia\u0142a, po\u0142\u0105czenie rozpocznie si\u0119 po zapisaniu",
-    uk: "\u0429\u0435 \u043D\u0435 \u0437\u0431\u0435\u0440\u0435\u0436\u0435\u043D\u043E \u2013 \u0441\u043F\u043E\u043B\u0443\u0447\u0435\u043D\u043D\u044F \u0432\u0436\u0435 \u043F\u0440\u0430\u0446\u044E\u0454, \u0437\u2019\u0454\u0434\u043D\u0430\u043D\u043D\u044F \u043F\u043E\u0447\u043D\u0435\u0442\u044C\u0441\u044F \u043F\u0456\u0441\u043B\u044F \u0437\u0431\u0435\u0440\u0435\u0436\u0435\u043D\u043D\u044F",
-    "zh-cn": "\u5C1A\u672A\u4FDD\u5B58 \u2013 \u5DF2\u53EF\u914D\u5BF9\uFF0C\u4FDD\u5B58\u540E\u5F00\u59CB\u8FDE\u63A5"
-  },
-  statusNoHost: {
-    en: "Enter the IP address first",
-    de: "Zuerst die IP-Adresse eintragen",
-    ru: "\u0421\u043D\u0430\u0447\u0430\u043B\u0430 \u0432\u0432\u0435\u0434\u0438\u0442\u0435 IP-\u0430\u0434\u0440\u0435\u0441",
-    pt: "Introduza primeiro o endere\xE7o IP",
-    nl: "Voer eerst het IP-adres in",
-    fr: "Saisissez d\u2019abord l\u2019adresse IP",
-    it: "Inserisci prima l\u2019indirizzo IP",
-    es: "Introduzca primero la direcci\xF3n IP",
-    pl: "Najpierw wpisz adres IP",
-    uk: "\u0421\u043F\u043E\u0447\u0430\u0442\u043A\u0443 \u0432\u0432\u0435\u0434\u0456\u0442\u044C IP-\u0430\u0434\u0440\u0435\u0441\u0443",
-    "zh-cn": "\u8BF7\u5148\u8F93\u5165 IP \u5730\u5740"
-  },
   noHost: {
     en: "Please enter the IP address of the TV.",
     de: "Bitte die IP-Adresse des TV eingeben.",
@@ -370,7 +344,6 @@ class Androidtv extends utils.Adapter {
     });
     this.on("ready", this.onReady.bind(this));
     this.on("stateChange", this.onStateChange.bind(this));
-    this.on("message", this.onMessage.bind(this));
     this.on("unload", this.onUnload.bind(this));
     this.deviceManagement = new import_device_management.AndroidTvDeviceManagement(this, this.dmBridge());
   }
@@ -419,7 +392,18 @@ class Androidtv extends utils.Adapter {
         running: false
       };
       this.configured.push(entry);
+      const initial = { "info.connected": false };
+      if (entry.mode !== "adb") {
+        initial["info.pairingRequired"] = false;
+      }
+      if (entry.mode !== "remote") {
+        initial["info.adbConnected"] = false;
+        initial["info.adbAuthorizationPending"] = false;
+      }
+      await this.setDeviceStates(id, initial);
       if (config.enabled === false) {
+        await this.setStateChangedAsync(`${id}.info.status`, this.text("statusDisabled"), true);
+        await this.setStateChangedAsync(`${id}.currentAppName`, "", true);
         continue;
       }
       const runtime = this.createRuntime(id, config);
@@ -429,7 +413,7 @@ class Androidtv extends utils.Adapter {
     }
     await this.removeStaleObjects(usedIds, devices);
     if (!devices.length) {
-      this.log.warn("No devices configured - add your TV in the instance settings.");
+      this.log.warn("No devices configured - add your TV in the instance settings (tab Devices).");
     }
     this.subscribeStates("*");
     for (const device of this.devices.values()) {
@@ -1141,43 +1125,6 @@ class Androidtv extends utils.Adapter {
   text(key) {
     return MESSAGES[key][this.uiLanguage];
   }
-  reply(obj, payload) {
-    if (obj.callback) {
-      this.sendTo(obj.from, obj.command, payload, obj.callback);
-    }
-  }
-  async onMessage(obj) {
-    var _a;
-    if (!obj || typeof obj !== "object") {
-      return;
-    }
-    if (typeof obj.command === "string" && obj.command.startsWith("dm:")) {
-      return;
-    }
-    const msg = (_a = obj.message) != null ? _a : {};
-    const host = typeof msg.host === "string" ? msg.host.trim() : "";
-    try {
-      switch (obj.command) {
-        case "startPairing":
-          await this.startPairing(host);
-          this.reply(obj, { result: this.text("pairingStarted") });
-          break;
-        case "finishPairing": {
-          const configured = await this.finishPairing(host, typeof msg.pin === "string" ? msg.pin : "");
-          this.reply(obj, { result: this.text(configured ? "pairingDone" : "pairingDoneSave") });
-          break;
-        }
-        case "deviceStatus":
-          this.reply(obj, this.deviceStatus(host, msg.enabled !== false));
-          return;
-        default:
-          this.log.debug(`Unknown message command "${obj.command}"`);
-      }
-    } catch (e) {
-      this.log.warn(`Pairing with ${host || "?"} failed: ${e.message}`);
-      this.reply(obj, { error: this.errorText(e) });
-    }
-  }
   /**
    * Text (system language) for a pairing/command error.
    *
@@ -1230,26 +1177,6 @@ class Androidtv extends utils.Adapter {
         }, 500);
       }
     };
-  }
-  /**
-   * Status line for one device in the admin UI (`textSendTo`).
-   *
-   * @param host - Host as currently entered in the form (may be unsaved)
-   * @param enabled - Checkbox value in the form
-   */
-  deviceStatus(host, enabled) {
-    const grey = { color: "#888888" };
-    if (!host) {
-      return { text: this.text("statusNoHost"), icon: "connection", style: grey };
-    }
-    if (!enabled) {
-      return { text: this.text("statusDisabled"), icon: "no-connection", style: grey };
-    }
-    const device = [...this.devices.values()].find((d) => d.config.host.trim() === host);
-    if (!device) {
-      return { text: this.text("statusUnsaved"), icon: "pair", style: grey };
-    }
-    return this.statusOf(device);
   }
   /**
    * Current status of a running device (admin status line and state `info.status`).

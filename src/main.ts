@@ -216,32 +216,6 @@ const MESSAGES = {
         uk: 'Вимкнено',
         'zh-cn': '已禁用',
     },
-    statusUnsaved: {
-        en: 'Not saved yet – pairing already works, the connection starts after saving',
-        de: 'Noch nicht gespeichert – Koppeln geht schon, die Verbindung startet nach dem Speichern',
-        ru: 'Ещё не сохранено – сопряжение уже работает, соединение начнётся после сохранения',
-        pt: 'Ainda não guardado – o emparelhamento já funciona, a ligação começa depois de guardar',
-        nl: 'Nog niet opgeslagen – koppelen werkt al, de verbinding start na het opslaan',
-        fr: 'Pas encore enregistré – l’appairage fonctionne déjà, la connexion démarre après l’enregistrement',
-        it: 'Non ancora salvato – l’associazione funziona già, la connessione parte dopo il salvataggio',
-        es: 'Aún no guardado – el emparejamiento ya funciona, la conexión empieza al guardar',
-        pl: 'Jeszcze nie zapisano – parowanie już działa, połączenie rozpocznie się po zapisaniu',
-        uk: 'Ще не збережено – сполучення вже працює, з’єднання почнеться після збереження',
-        'zh-cn': '尚未保存 – 已可配对，保存后开始连接',
-    },
-    statusNoHost: {
-        en: 'Enter the IP address first',
-        de: 'Zuerst die IP-Adresse eintragen',
-        ru: 'Сначала введите IP-адрес',
-        pt: 'Introduza primeiro o endereço IP',
-        nl: 'Voer eerst het IP-adres in',
-        fr: 'Saisissez d’abord l’adresse IP',
-        it: 'Inserisci prima l’indirizzo IP',
-        es: 'Introduzca primero la dirección IP',
-        pl: 'Najpierw wpisz adres IP',
-        uk: 'Спочатку введіть IP-адресу',
-        'zh-cn': '请先输入 IP 地址',
-    },
     noHost: {
         en: 'Please enter the IP address of the TV.',
         de: 'Bitte die IP-Adresse des TV eingeben.',
@@ -442,7 +416,6 @@ class Androidtv extends utils.Adapter {
         });
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
-        this.on('message', this.onMessage.bind(this));
         this.on('unload', this.onUnload.bind(this));
         this.deviceManagement = new AndroidTvDeviceManagement(this, this.dmBridge());
     }
@@ -504,7 +477,20 @@ class Androidtv extends utils.Adapter {
                 running: false,
             };
             this.configured.push(entry);
+            // @KI_HINWEIS: Aus PR #11 (Voodoo2man): Verbindungs-States beim Start zurücksetzen, sonst zeigen
+            // deaktivierte Geräte den letzten Online-Zustand weiter an (Geräteverwaltung, statusStates).
+            const initial: Record<string, ioBroker.StateValue> = { 'info.connected': false };
+            if (entry.mode !== 'adb') {
+                initial['info.pairingRequired'] = false;
+            }
+            if (entry.mode !== 'remote') {
+                initial['info.adbConnected'] = false;
+                initial['info.adbAuthorizationPending'] = false;
+            }
+            await this.setDeviceStates(id, initial);
             if (config.enabled === false) {
+                await this.setStateChangedAsync(`${id}.info.status`, this.text('statusDisabled'), true);
+                await this.setStateChangedAsync(`${id}.currentAppName`, '', true);
                 continue;
             }
             const runtime = this.createRuntime(id, config);
@@ -515,7 +501,7 @@ class Androidtv extends utils.Adapter {
         await this.removeStaleObjects(usedIds, devices);
 
         if (!devices.length) {
-            this.log.warn('No devices configured - add your TV in the instance settings.');
+            this.log.warn('No devices configured - add your TV in the instance settings (tab Devices).');
         }
 
         this.subscribeStates('*');
@@ -1270,44 +1256,6 @@ class Androidtv extends utils.Adapter {
         return MESSAGES[key][this.uiLanguage];
     }
 
-    private reply(obj: ioBroker.Message, payload: { result: string } | { error: string } | StatusText): void {
-        if (obj.callback) {
-            this.sendTo(obj.from, obj.command, payload, obj.callback);
-        }
-    }
-
-    private async onMessage(obj: ioBroker.Message): Promise<void> {
-        if (!obj || typeof obj !== 'object') {
-            return;
-        }
-        if (typeof obj.command === 'string' && obj.command.startsWith('dm:')) {
-            return; // handled by the Device Manager (dm-utils)
-        }
-        const msg = (obj.message ?? {}) as { host?: unknown; pin?: unknown; enabled?: unknown };
-        const host = typeof msg.host === 'string' ? msg.host.trim() : '';
-        try {
-            switch (obj.command) {
-                case 'startPairing':
-                    await this.startPairing(host);
-                    this.reply(obj, { result: this.text('pairingStarted') });
-                    break;
-                case 'finishPairing': {
-                    const configured = await this.finishPairing(host, typeof msg.pin === 'string' ? msg.pin : '');
-                    this.reply(obj, { result: this.text(configured ? 'pairingDone' : 'pairingDoneSave') });
-                    break;
-                }
-                case 'deviceStatus':
-                    this.reply(obj, this.deviceStatus(host, msg.enabled !== false));
-                    return;
-                default:
-                    this.log.debug(`Unknown message command "${obj.command}"`);
-            }
-        } catch (e) {
-            this.log.warn(`Pairing with ${host || '?'} failed: ${(e as Error).message}`);
-            this.reply(obj, { error: this.errorText(e) });
-        }
-    }
-
     /**
      * Text (system language) for a pairing/command error.
      *
@@ -1367,27 +1315,6 @@ class Androidtv extends utils.Adapter {
                 }, 500);
             },
         };
-    }
-
-    /**
-     * Status line for one device in the admin UI (`textSendTo`).
-     *
-     * @param host - Host as currently entered in the form (may be unsaved)
-     * @param enabled - Checkbox value in the form
-     */
-    private deviceStatus(host: string, enabled: boolean): StatusText {
-        const grey = { color: '#888888' };
-        if (!host) {
-            return { text: this.text('statusNoHost'), icon: 'connection', style: grey };
-        }
-        if (!enabled) {
-            return { text: this.text('statusDisabled'), icon: 'no-connection', style: grey };
-        }
-        const device = [...this.devices.values()].find(d => d.config.host.trim() === host);
-        if (!device) {
-            return { text: this.text('statusUnsaved'), icon: 'pair', style: grey };
-        }
-        return this.statusOf(device);
     }
 
     /**
