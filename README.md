@@ -143,7 +143,7 @@ Bugs and ideas: [issues](https://github.com/Schimi1983/ioBroker.androidtv/issues
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.3.0 (2026-11-19)
 
 - (Schimi, Voodoo2man) Devices are now managed as cards in the tab **Devices** (ioBroker device manager): status, quick controls, pairing, reconnect, settings and remove – replaces the device table (#5, #11)
 - (Voodoo2man) Disabled devices no longer show the last online status (also `power`)
@@ -173,10 +173,6 @@ Bugs and ideas: [issues](https://github.com/Schimi1983/ioBroker.androidtv/issues
 
 - (Schimi) Wake-on-LAN: `power` = on also switches on devices in deep standby without network (enter the MAC address in the device settings; optional broadcast address in the expert settings)
 - (Schimi) Faster reconnect after Wake-on-LAN
-
-### 0.1.2 (2026-10-29)
-
-- (Schimi) Repository checker: removed news entry of the unpublished version 0.0.1, added CHANGELOG_OLD.md
 
 Older changes: [CHANGELOG_OLD.md](CHANGELOG_OLD.md)
 
