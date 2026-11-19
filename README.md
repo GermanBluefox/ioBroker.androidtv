@@ -145,7 +145,7 @@ Bugs and ideas: [issues](https://github.com/Schimi1983/ioBroker.androidtv/issues
 -->
 ### **WORK IN PROGRESS**
 
-- (Schimi, Voodoo2man) Devices are now managed as cards in the tab **Devices** (ioBroker device manager): status, quick controls, pairing, reconnect, settings and remove – replaces the device table
+- (Schimi, Voodoo2man) Devices are now managed as cards in the tab **Devices** (ioBroker device manager): status, quick controls, pairing, reconnect, settings and remove – replaces the device table (#5, #11)
 - (Voodoo2man) Disabled devices no longer show the last online status (also `power`)
 - (Schimi) New data point `currentAppName`: readable name of the running app (e.g. "Netflix" instead of `com.netflix.ninja`)
 - (Schimi) `power` stays correct when the TV wakes the device again via HDMI-CEC right after switching it off (short check via ADB)
