@@ -204,6 +204,7 @@ describe('adb parsers', () => {
             title: 'Stranger Things',
             subtitle: 'Chapter One: The Vanishing',
             position: 754,
+            activeSessions: 1,
         });
         expect(parseMediaSessions('')).to.equal(null);
     });
@@ -238,6 +239,24 @@ describe('adb parsers', () => {
         expect(m?.subtitle).to.equal('ARTS7');
         const paused = parseMediaSessions(text.replace('state=3', 'state=2'), 130_500);
         expect(paused?.position).to.equal(10);
+    });
+
+    it('prefers the session of the foreground app when several are playing', () => {
+        const text = [
+            'package=com.old.app',
+            'active=true',
+            'state=PlaybackState {state=3, position=1000, buffered position=0, speed=1.0, updated=0, actions=0}',
+            'metadata: size=4, description=Old show, null, null',
+            'package=com.nousguide.android.tvthek.fire',
+            'active=true',
+            'state=PlaybackState {state=3, position=-1, buffered position=0, speed=1.0, updated=0, actions=0}',
+            'metadata: size=4, description=New show, null, null',
+        ].join('\n');
+        expect(parseMediaSessions(text)?.title).to.equal('Old show');
+        const m = parseMediaSessions(text, undefined, 'com.nousguide.android.tvthek.fire');
+        expect(m?.title).to.equal('New show');
+        expect(m?.position).to.equal(undefined);
+        expect(m?.activeSessions).to.equal(2);
     });
 
     it('quotes shell arguments safely', () => {

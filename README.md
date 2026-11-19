@@ -146,6 +146,7 @@ Bugs and ideas: [issues](https://github.com/Schimi1983/ioBroker.androidtv/issues
 ### **WORK IN PROGRESS**
 
 - (Schimi) `currentAppName` shows "ORF ON" on Fire TV
+- (Schimi) Playback info: if several apps report playback, the app in the foreground wins; changes of the playback info are written to the debug log
 
 ### 0.3.0 (2026-11-19)
 

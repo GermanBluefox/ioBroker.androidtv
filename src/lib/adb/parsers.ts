@@ -18,6 +18,8 @@ export interface MediaInfo {
     subtitle?: string;
     /** Playback position in seconds at the time of the last update by the app */
     position?: number;
+    /** Number of active sessions found (for debug logging) */
+    activeSessions?: number;
 }
 
 /** Result of one poll. */
@@ -92,8 +94,9 @@ export function parseResumedActivity(text: string): string | undefined {
  *
  * @param text - Output section (lines with package=, active=, state=PlaybackState, description=)
  * @param nowMs - Current device uptime in ms (SystemClock.elapsedRealtime), used to extrapolate the position
+ * @param preferApp - Foreground app; its session wins over other sessions in the same playback state
  */
-export function parseMediaSessions(text: string, nowMs?: number): MediaInfo | null {
+export function parseMediaSessions(text: string, nowMs?: number, preferApp?: string): MediaInfo | null {
     interface Session {
         app: string;
         active: boolean;
@@ -137,7 +140,10 @@ export function parseMediaSessions(text: string, nowMs?: number): MediaInfo | nu
         const st = PLAYBACK_STATES[s.state ?? 0] ?? 'idle';
         return st === 'play' ? 0 : st === 'pause' || st === 'buffering' ? 1 : 2;
     };
-    const best = active.sort((a, b) => rank(a) - rank(b))[0];
+    // @KI_HINWEIS: Bei gleichem Rang die Sitzung der App im Vordergrund bevorzugen – sonst kann eine alte, noch
+    // als aktiv gemeldete Sitzung einer anderen App (oder ein Rest der vorigen Sendung) den Titel festhalten.
+    const fg = (s: Session): number => (preferApp && s.app === preferApp ? 0 : 1);
+    const best = active.sort((a, b) => rank(a) - rank(b) || fg(a) - fg(b))[0];
     if (!best) {
         return null;
     }
@@ -167,6 +173,7 @@ export function parseMediaSessions(text: string, nowMs?: number): MediaInfo | nu
         title: clean(title),
         subtitle: clean(subtitle),
         position: positionMs !== undefined ? Math.max(0, Math.round(positionMs / 1000)) : undefined,
+        activeSessions: active.length,
     };
 }
 
@@ -184,7 +191,7 @@ export function parsePollOutput(output: string): PollResult {
         const up = /^\s*([\d.]+)/.exec(uptime ?? '');
         const nowMs = up ? Math.round(Number(up[1]) * 1000) : undefined;
         result.currentApp = parseResumedActivity(activity);
-        result.media = media !== undefined ? parseMediaSessions(media, nowMs) : null;
+        result.media = media !== undefined ? parseMediaSessions(media, nowMs, result.currentApp) : null;
     }
     return result;
 }

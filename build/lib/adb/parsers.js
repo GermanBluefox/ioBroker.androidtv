@@ -67,7 +67,7 @@ function parseResumedActivity(text) {
   const m = /ResumedActivity[:=]\s*ActivityRecord\{\S+ u\d+ ([A-Za-z][\w.]*)\//.exec(text);
   return m == null ? void 0 : m[1];
 }
-function parseMediaSessions(text, nowMs) {
+function parseMediaSessions(text, nowMs, preferApp) {
   var _a, _b, _c, _d;
   const sessions = [];
   let current;
@@ -103,7 +103,8 @@ function parseMediaSessions(text, nowMs) {
     const st = (_b2 = PLAYBACK_STATES[(_a2 = s.state) != null ? _a2 : 0]) != null ? _b2 : "idle";
     return st === "play" ? 0 : st === "pause" || st === "buffering" ? 1 : 2;
   };
-  const best = active.sort((a, b) => rank(a) - rank(b))[0];
+  const fg = (s) => preferApp && s.app === preferApp ? 0 : 1;
+  const best = active.sort((a, b) => rank(a) - rank(b) || fg(a) - fg(b))[0];
   if (!best) {
     return null;
   }
@@ -121,7 +122,8 @@ function parseMediaSessions(text, nowMs) {
     state,
     title: clean(title),
     subtitle: clean(subtitle),
-    position: positionMs !== void 0 ? Math.max(0, Math.round(positionMs / 1e3)) : void 0
+    position: positionMs !== void 0 ? Math.max(0, Math.round(positionMs / 1e3)) : void 0,
+    activeSessions: active.length
   };
 }
 function parsePollOutput(output) {
@@ -132,7 +134,7 @@ function parsePollOutput(output) {
     const up = /^\s*([\d.]+)/.exec(uptime != null ? uptime : "");
     const nowMs = up ? Math.round(Number(up[1]) * 1e3) : void 0;
     result.currentApp = parseResumedActivity(activity);
-    result.media = media !== void 0 ? parseMediaSessions(media, nowMs) : null;
+    result.media = media !== void 0 ? parseMediaSessions(media, nowMs, result.currentApp) : null;
   }
   return result;
 }

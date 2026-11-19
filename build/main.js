@@ -691,6 +691,7 @@ class Androidtv extends utils.Adapter {
    * @param result - Parsed poll output
    */
   async applyPoll(runtime, result) {
+    var _a, _b;
     const { id } = runtime;
     if (runtime.mode === "adb") {
       const target = runtime.powerTarget;
@@ -710,6 +711,14 @@ class Androidtv extends utils.Adapter {
       await this.setMediaStates(id, null);
     } else if (result.media !== void 0) {
       await this.setMediaStates(id, result.media);
+    }
+    const media = result.awake === false ? null : result.media;
+    if (media !== void 0) {
+      const line = media ? `${media.app} ${media.state} "${(_a = media.title) != null ? _a : ""}" (${(_b = media.activeSessions) != null ? _b : 0} active session(s))` : "no active media session";
+      if (line !== runtime.lastMediaLog) {
+        runtime.lastMediaLog = line;
+        this.log.debug(`${runtime.label}: ADB media: ${line}`);
+      }
     }
   }
   /**

@@ -44,6 +44,8 @@ interface DeviceRuntime {
     offlineTimer?: ioBroker.Timeout;
     /** Wake-on-LAN was sent: switch on as soon as ADB is back (until this time) */
     wakePendingUntil?: number;
+    /** Last logged media session (app, state, title) – debug log only on a change */
+    lastMediaLog?: string;
 }
 
 /** Answer for the admin `textSendTo` status line. */
@@ -819,6 +821,18 @@ class Androidtv extends utils.Adapter {
             await this.setMediaStates(id, null);
         } else if (result.media !== undefined) {
             await this.setMediaStates(id, result.media);
+        }
+        // @KI_HINWEIS: Forum 19.11. (ORF ON): Titel blieb bei Sendungswechsel stehen, nicht nachstellbar →
+        // Änderungen der Wiedergabe im Debug-Log, damit Tester sie schicken können.
+        const media = result.awake === false ? null : result.media;
+        if (media !== undefined) {
+            const line = media
+                ? `${media.app} ${media.state} "${media.title ?? ''}" (${media.activeSessions ?? 0} active session(s))`
+                : 'no active media session';
+            if (line !== runtime.lastMediaLog) {
+                runtime.lastMediaLog = line;
+                this.log.debug(`${runtime.label}: ADB media: ${line}`);
+            }
         }
     }
 
