@@ -1098,6 +1098,9 @@ class Androidtv extends utils.Adapter {
    */
   async setCurrentApp(id, app) {
     await this.setStateChangedAsync(`${id}.currentApp`, app, true);
+    if (this.appNamePower.get(id) === false) {
+      return;
+    }
     await this.setStateChangedAsync(
       `${id}.currentAppName`,
       (0, import_app_names.appDisplayName)(app, this.appsById.values(), this.uiLanguage),

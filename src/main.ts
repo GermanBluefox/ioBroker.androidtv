@@ -1228,6 +1228,11 @@ class Androidtv extends utils.Adapter {
      */
     private async setCurrentApp(id: string, app: string): Promise<void> {
         await this.setStateChangedAsync(`${id}.currentApp`, app, true);
+        // @KI_HINWEIS: Feldtest SHIELD: Beim Verbinden meldet Remote v2 die App (Launcher) auch im Standby →
+        // ohne diese Prüfung stand "Startbildschirm" bei power=false. Der Name kommt dann mit refreshAppName().
+        if (this.appNamePower.get(id) === false) {
+            return;
+        }
         await this.setStateChangedAsync(
             `${id}.currentAppName`,
             appDisplayName(app, this.appsById.values(), this.uiLanguage),
