@@ -143,6 +143,10 @@ Bugs and ideas: [issues](https://github.com/Schimi1983/ioBroker.androidtv/issues
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+
+- (Schimi) `currentAppName` shows "ORF ON" on Fire TV
+
 ### 0.3.0 (2026-11-19)
 
 - (Schimi, Voodoo2man) Devices are now managed as cards in the tab **Devices** (ioBroker device manager): status, quick controls, pairing, reconnect, settings and remove – replaces the device table (#5, #11)

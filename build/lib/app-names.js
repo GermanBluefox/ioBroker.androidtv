@@ -38,7 +38,9 @@ const KNOWN_APPS = {
   "com.spotify.tv.android": "Spotify",
   "com.dazn": "DAZN",
   "com.apple.atve.androidtv.appletv": "Apple TV",
-  "com.apple.atve.amazon.appletv": "Apple TV"
+  "com.apple.atve.amazon.appletv": "Apple TV",
+  // Fire TV package confirmed by sigi234 (forum, 19.11.2026)
+  "com.nousguide.android.tvthek.fire": "ORF ON"
 };
 const LAUNCHERS = /* @__PURE__ */ new Set([
   "com.google.android.tvlauncher",

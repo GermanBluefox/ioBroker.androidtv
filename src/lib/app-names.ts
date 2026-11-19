@@ -24,6 +24,8 @@ const KNOWN_APPS: Readonly<Record<string, string>> = {
     'com.dazn': 'DAZN',
     'com.apple.atve.androidtv.appletv': 'Apple TV',
     'com.apple.atve.amazon.appletv': 'Apple TV',
+    // Fire TV package confirmed by sigi234 (forum, 19.11.2026)
+    'com.nousguide.android.tvthek.fire': 'ORF ON',
 };
 
 /** Home screens of Android TV / Google TV / Fire TV. */
