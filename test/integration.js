@@ -27,6 +27,12 @@ tests.integration(path.join(__dirname, '..'), {
                     native: {},
                 });
                 await harness.states.setStateAsync('androidtv.0.Old_TV.info.connected', { val: true, ack: true });
+                await harness.objects.setObjectAsync('androidtv.0.Old_TV.power', {
+                    type: 'state',
+                    common: { name: 'Power', type: 'boolean', role: 'switch.power', read: true, write: true },
+                    native: {},
+                });
+                await harness.states.setStateAsync('androidtv.0.Old_TV.power', { val: true, ack: true });
 
                 // First start generates the certificate and stores it in the adapter file storage
                 await harness.startAdapterAndWait();
@@ -95,6 +101,10 @@ tests.integration(path.join(__dirname, '..'), {
                 const oldConnected = await harness.states.getStateAsync('androidtv.0.Old_TV.info.connected');
                 if (oldConnected?.val !== false) {
                     throw new Error(`disabled device still reported as connected: ${JSON.stringify(oldConnected)}`);
+                }
+                const oldPower = await harness.states.getStateAsync('androidtv.0.Old_TV.power');
+                if (oldPower?.val !== false) {
+                    throw new Error(`disabled device still reported as on: ${JSON.stringify(oldPower)}`);
                 }
                 const controlState = await send('dm:deviceControlState', { deviceId: 'Test_TV', controlId: 'power' });
                 if (!controlState || controlState.result?.error || controlState.error) {

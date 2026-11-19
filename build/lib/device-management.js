@@ -409,6 +409,14 @@ class AndroidTvDeviceManagement extends import_dm_utils.DeviceManagement {
           validatorNoSaveOnError: true,
           sm: 12
         },
+        // @KI_HINWEIS: Broadcast nur zeigen, wenn eine MAC eingetragen ist – ohne MAC kein Wake-on-LAN.
+        wolBroadcast: {
+          type: "text",
+          label: import_dm_texts.DM_TEXTS.broadcast,
+          help: import_dm_texts.DM_TEXTS.broadcastHelp,
+          hidden: "!data.wolMac",
+          sm: 12
+        },
         enableIme: { type: "checkbox", label: import_dm_texts.DM_TEXTS.ime, hidden: "data.connection === 'adb'", sm: 12 },
         adbPort: {
           type: "number",
@@ -418,7 +426,6 @@ class AndroidTvDeviceManagement extends import_dm_utils.DeviceManagement {
           hidden: "data.connection === 'remote'",
           sm: 12
         },
-        wolBroadcast: { type: "text", label: import_dm_texts.DM_TEXTS.broadcast, sm: 12 },
         // what to do on the device after saving (step texts from PR #11)
         stepPair: { type: "staticText", text: import_dm_texts.DM_TEXTS.stepPair, hidden: "data.connection === 'adb'", sm: 12 },
         stepAdbRemote: {

@@ -73,10 +73,10 @@ App-Kennungen funktionieren beim Fire TV und mit dem Gerätetyp *mit Titel und P
 
 - **„Kopplung erforderlich“**: neu koppeln (Schritt 2) – nötig nach dem Zurücksetzen des Geräts.
 - **„Nicht verbunden“**: Das Gerät ist aus oder nicht erreichbar. Der Adapter verbindet sich von selbst neu.
-- **Lässt sich nach einiger Zeit nicht mehr einschalten**: tiefer Standby – Wake-on-LAN einrichten (Schritt 3). Die MAC aus dem Router nehmen, nicht aus `info.mac` (das kann die WLAN-MAC sein). Verschiedene Netze: in den Experteneinstellungen die Broadcast-Adresse eintragen (z. B. `192.168.20.255`).
+- **Lässt sich nach einiger Zeit nicht mehr einschalten**: tiefer Standby – Wake-on-LAN einrichten (Schritt 3). Die MAC aus dem Router nehmen, nicht aus `info.mac` (das kann die WLAN-MAC sein). Verschiedene Netze: in den Geräte-Einstellungen die Broadcast-Adresse eintragen (z. B. `192.168.20.255`).
 - **„Ausschalten“ im Menü des Geräts** fährt es ganz herunter – dann schaltet es nur noch die eigene Fernbedienung ein.
 - **Die SHIELD schaltet sich nach dem Ausschalten wieder ein**: Der Fernseher weckt sie per HDMI-CEC, solange er ihren Eingang zeigt. Vorher auf einen anderen Eingang umschalten oder den Fernseher ausschalten. Mit ADB erkennt der Adapter das und zeigt `power` richtig an.
-- **Der Fernseher zeigt ständig „Tastatur auf Mobilgerät verwenden“**: Expertenmodus › beim Gerät *Aktuelle App & Texteingabe* abwählen.
+- **Der Fernseher zeigt ständig „Tastatur auf Mobilgerät verwenden“**: in den Geräte-Einstellungen (Zahnrad auf der Karte) *Aktuelle App & Texteingabe* abwählen.
 - **Lautstärke zeigt nichts an**: Die Lautstärke regelt der Fernseher / AV-Receiver (HDMI-CEC); die Lautstärke-Tasten funktionieren trotzdem.
 - **Kein Titel bei Netflix oder Prime Video** (Prime Video zeigt nur „PrimeVideo“): Diese Apps geben den Titel nicht an Android weiter; Play/Pause und Position funktionieren. YouTube zeigt Titel und Kanal.
 

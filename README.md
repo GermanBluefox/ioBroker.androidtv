@@ -82,10 +82,10 @@ App IDs work on Fire TV and with the device type *with title and play/pause*. A 
 
 - **"Pairing required"**: pair again (step 2) – needed after resetting the device.
 - **"Not connected"**: the device is off or unreachable. The adapter reconnects by itself.
-- **Cannot switch on after a while**: deep standby – set up Wake-on-LAN (step 3). Use the MAC from your router, not `info.mac` (that may be the Wi-Fi MAC). Different networks: enter the broadcast address in the expert settings (e.g. `192.168.20.255`).
+- **Cannot switch on after a while**: deep standby – set up Wake-on-LAN (step 3). Use the MAC from your router, not `info.mac` (that may be the Wi-Fi MAC). Different networks: enter the broadcast address in the device settings (e.g. `192.168.20.255`).
 - **"Shut down" in the device menu** switches it off completely – then only its own remote can switch it on.
 - **SHIELD turns itself on again after switching off**: the TV wakes it via HDMI-CEC while it shows the SHIELD's input. Switch the TV to another input first, or switch off the TV. With ADB the adapter detects this and shows `power` correctly.
-- **TV keeps showing "Use keyboard on mobile device"**: expert mode › untick *Current app & text input* for this device.
+- **TV keeps showing "Use keyboard on mobile device"**: untick *Current app & text input* in the device settings (gear icon on the card).
 - **Volume shows nothing**: volume is controlled by the TV / AV receiver (HDMI-CEC); the volume buttons still work.
 - **No title for Netflix or Prime Video** (Prime Video shows only "PrimeVideo"): these apps do not pass the title on to Android; play/pause and position work. YouTube shows title and channel.
 
@@ -146,7 +146,7 @@ Bugs and ideas: [issues](https://github.com/Schimi1983/ioBroker.androidtv/issues
 ### **WORK IN PROGRESS**
 
 - (Schimi, Voodoo2man) Devices are now managed as cards in the tab **Devices** (ioBroker device manager): status, quick controls, pairing, reconnect, settings and remove – replaces the device table
-- (Voodoo2man) Disabled devices no longer show the last online status
+- (Voodoo2man) Disabled devices no longer show the last online status (also `power`)
 - (Schimi) New data point `currentAppName`: readable name of the running app (e.g. "Netflix" instead of `com.netflix.ninja`)
 - (Schimi) `power` stays correct when the TV wakes the device again via HDMI-CEC right after switching it off (short check via ADB)
 - (Schimi) Clearer device type names in the settings ("standard", "with title and play/pause (ADB required)", "Amazon Fire TV") with a short explanation

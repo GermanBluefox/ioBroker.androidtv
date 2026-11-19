@@ -404,6 +404,7 @@ class Androidtv extends utils.Adapter {
       if (config.enabled === false) {
         await this.setStateChangedAsync(`${id}.info.status`, this.text("statusDisabled"), true);
         await this.setStateChangedAsync(`${id}.currentAppName`, "", true);
+        await this.setStateChangedAsync(`${id}.power`, false, true);
         continue;
       }
       const runtime = this.createRuntime(id, config);

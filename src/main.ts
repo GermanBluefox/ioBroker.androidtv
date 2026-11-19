@@ -491,6 +491,8 @@ class Androidtv extends utils.Adapter {
             if (config.enabled === false) {
                 await this.setStateChangedAsync(`${id}.info.status`, this.text('statusDisabled'), true);
                 await this.setStateChangedAsync(`${id}.currentAppName`, '', true);
+                // @KI_HINWEIS: Deaktiviert = nicht überwacht → kein alter "an"-Zustand stehen lassen.
+                await this.setStateChangedAsync(`${id}.power`, false, true);
                 continue;
             }
             const runtime = this.createRuntime(id, config);
