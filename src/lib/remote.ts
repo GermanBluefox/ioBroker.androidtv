@@ -390,7 +390,7 @@ export class RemoteConnection extends EventEmitter<RemoteEvents> {
                 // (Reconnect nach ~2 s). Deshalb einen konkreten Hinweis statt einer allgemeinen Meldung loggen.
                 const cmd = this.lastCommand ?? 'last command';
                 const hint = cmd.startsWith('app link ')
-                    ? ' - this device accepts only https deep links (e.g. https://www.netflix.com/title), not package names'
+                    ? ' - without ADB only https deep links work (e.g. https://www.netflix.com/title). To start apps by package name, choose the device type "with title and play/pause (ADB required)" and switch on network debugging on the device'
                     : '';
                 this.emit('log', 'warn', `${this.options.host}: TV rejected ${cmd}${hint}`);
                 break;

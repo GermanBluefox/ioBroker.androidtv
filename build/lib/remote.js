@@ -333,7 +333,7 @@ class RemoteConnection extends import_node_events.EventEmitter {
         break;
       case "error": {
         const cmd = (_a = this.lastCommand) != null ? _a : "last command";
-        const hint = cmd.startsWith("app link ") ? " - this device accepts only https deep links (e.g. https://www.netflix.com/title), not package names" : "";
+        const hint = cmd.startsWith("app link ") ? ' - without ADB only https deep links work (e.g. https://www.netflix.com/title). To start apps by package name, choose the device type "with title and play/pause (ADB required)" and switch on network debugging on the device' : "";
         this.emit("log", "warn", `${this.options.host}: TV rejected ${cmd}${hint}`);
         break;
       }
