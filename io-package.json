@@ -172,7 +172,8 @@
       }
     ],
     "supportedMessages": {
-      "deviceManager": true
+      "deviceManager": true,
+      "help": true
     }
   },
   "native": {

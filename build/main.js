@@ -27,6 +27,7 @@ var import_client = require("./lib/adb/client");
 var import_app_names = require("./lib/app-names");
 var import_device_management = require("./lib/device-management");
 var import_device = require("./lib/adb/device");
+var import_help = require("./lib/help");
 var import_certificate = require("./lib/certificate");
 var import_pairing = require("./lib/pairing");
 var import_remote = require("./lib/remote");
@@ -344,6 +345,7 @@ class Androidtv extends utils.Adapter {
     });
     this.on("ready", this.onReady.bind(this));
     this.on("stateChange", this.onStateChange.bind(this));
+    this.on("message", this.onMessage.bind(this));
     this.on("unload", this.onUnload.bind(this));
     this.deviceManagement = new import_device_management.AndroidTvDeviceManagement(this, this.dmBridge());
   }
@@ -1095,6 +1097,17 @@ class Androidtv extends utils.Adapter {
     device.wakePendingUntil = Date.now() + 9e4;
     (_b = device.remote) == null ? void 0 : _b.reconnectNow();
     (_c = device.adb) == null ? void 0 : _c.reconnectNow();
+  }
+  /**
+   * Answers `help`: the commands and states for AI agents, also while no device is connected. The `dm:*`
+   * commands are answered by the Device Manager.
+   *
+   * @param obj - Message
+   */
+  onMessage(obj) {
+    if ((obj == null ? void 0 : obj.command) === "help" && obj.callback) {
+      this.sendTo(obj.from, obj.command, { help: import_help.HELP, commands: import_help.COMMANDS }, obj.callback);
+    }
   }
   // ------------------------------------------------------------------------------------------------------------
   // Admin messages (pairing, status)
