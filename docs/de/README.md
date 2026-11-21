@@ -26,7 +26,7 @@ Unsicher? Mit **Standard** anfangen – umstellen geht jederzeit.
 
 **Standard:** Gerät einschalten, auf seiner Karte **Gerät koppeln** klicken und den 6-stelligen Code vom Fernseher eingeben. Fertig – der Statuspunkt auf der Karte wird grün.
 
-**Mit Titel und Play/Pause:** wie oben koppeln. Dann am Gerät **Einstellungen › Geräteeinstellungen › Entwickleroptionen** öffnen und **Netzwerk-Debugging** einschalten (keine Entwickleroptionen? *Info* › 7× auf **Build** klicken). Am Fernseher **„Debugging zulassen?“** mit **Immer zulassen** bestätigen.
+**Mit Titel und Play/Pause:** wie oben koppeln. Dann am Gerät **Einstellungen › Geräteeinstellungen › Entwickleroptionen** öffnen und **Netzwerk-Debugging** einschalten (keine Entwickleroptionen? *Info* › 7× auf **Build** klicken). Manche Fernseher (z. B. Philips) brauchen zusätzlich **USB-Debugging**. Am Fernseher **„Debugging zulassen?“** mit **Immer zulassen** bestätigen.
 
 **Amazon Fire TV:** am Fire TV **Einstellungen › Mein Fire TV › Entwickleroptionen** öffnen und **ADB-Debugging** einschalten (keine Entwickleroptionen? *Info* › 7× auf den Gerätenamen klicken). Am Fernseher **„USB-Debugging zulassen?“** mit **Immer zulassen** bestätigen.
 

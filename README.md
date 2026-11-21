@@ -35,7 +35,7 @@ Not sure? Start with **standard** – you can switch later.
 
 **Standard:** switch the device on, click **Pair device** on its card and enter the 6-character code from the TV. Done – the status dot on the card turns green.
 
-**With title and play/pause:** pair as above. Then on the device open **Settings › Device Preferences › Developer options** and switch on **Network debugging** (no developer options? *About* › click **Build** 7 times). Confirm **"Allow debugging?"** on the TV with **Always allow**.
+**With title and play/pause:** pair as above. Then on the device open **Settings › Device Preferences › Developer options** and switch on **Network debugging** (no developer options? *About* › click **Build** 7 times). Some TVs (e.g. Philips) also need **USB debugging** switched on. Confirm **"Allow debugging?"** on the TV with **Always allow**.
 
 **Amazon Fire TV:** on the Fire TV open **Settings › My Fire TV › Developer options** and switch on **ADB debugging** (no developer options? *About* › click the device name 7 times). Confirm **"Allow USB debugging?"** on the TV with **Always allow**.
 
@@ -152,6 +152,7 @@ Bugs and ideas: [issues](https://github.com/Schimi1983/ioBroker.androidtv/issues
 - (@GermanBluefox) Added the message "help": a description of all messages and data points for AI agents (e.g. pi-agent), and `common.supportedMessages.help`
 - (Schimi) `currentAppName` shows "ORF ON" on Fire TV
 - (Schimi) Clearer log hint when an app ID is started without ADB
+- (Schimi) Setup hint: some TVs (e.g. Philips) also need USB debugging
 - (Schimi) Playback info: if several apps report playback, the app in the foreground wins; changes of the playback info are written to the debug log
 
 ### 0.3.0 (2026-11-19)
