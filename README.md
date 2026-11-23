@@ -82,6 +82,8 @@ App IDs work on Fire TV and with the device type *with title and play/pause*. A 
 
 The devices are controlled through the data points above. `sendTo('androidtv.0', 'help', {})` answers a description of them for AI agents (e.g. ioBroker.pi-agent) and script authors: `{ help, commands }`, where `commands` lists every command of the instance with `write` (whether it changes something); the `dm:*` commands belong to the device manager.
 
+The commands `getApps`, `launchApp {app, device?}`, `remote {key, device?}` and `power {on, device?}` follow the shared catalog of ioBroker (family `tv`, marked with `standard` in the help answer) and answer whether it worked: `device` is the name or ID of a TV (may be left out with one TV), `app` the name of an app favorite, a web link or an app ID, `key` one of `up`, `down`, `left`, `right`, `ok`, `back`, `home`, `menu`, `play`, `pause`, `volumeUp`, `volumeDown`, `mute`, `channelUp`, `channelDown`, `0`–`9` or a name of `sendKey`. Errors answer `{error, reason}`.
+
 ## Problems & solutions
 
 - **"Pairing required"**: pair again (step 2) – needed after resetting the device.
@@ -149,6 +151,7 @@ Bugs and ideas: [issues](https://github.com/Schimi1983/ioBroker.androidtv/issues
 -->
 ### **WORK IN PROGRESS**
 
+- (@GermanBluefox) Added the standard commands of the shared catalog: tv.getApps (the app favorites), tv.launchApp (also by the name of a favorite), tv.remote (the key names of the catalog) and tv.power (answers when the TV reports it)
 - (@GermanBluefox) Added the message "help": a description of all messages and data points for AI agents (e.g. pi-agent), and `common.supportedMessages.help`
 - (Schimi) `currentAppName` shows "ORF ON" on Fire TV
 - (Schimi) Clearer log hint when an app ID is started without ADB

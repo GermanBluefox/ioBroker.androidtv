@@ -31,6 +31,7 @@ var import_help = require("./lib/help");
 var import_certificate = require("./lib/certificate");
 var import_pairing = require("./lib/pairing");
 var import_remote = require("./lib/remote");
+var import_standard = require("./lib/standard");
 var import_states = require("./lib/states");
 var import_wol = require("./lib/wol");
 const PAIRING_SESSION_TTL_MS = 12e4;
@@ -39,6 +40,7 @@ const DEFAULT_ADB_POLL_S = 5;
 const CERT_FILE = "client-certificate.json";
 const ADB_KEY_FILE = "adb-key.json";
 const OFFLINE_GRACE_MS = 3e4;
+const ANSWER_WAIT_MS = 15e3;
 const MESSAGES = {
   pairingStarted: {
     en: 'The TV now shows a 6-character code. Enter it and click "Confirm code".',
@@ -1099,15 +1101,106 @@ class Androidtv extends utils.Adapter {
     (_c = device.adb) == null ? void 0 : _c.reconnectNow();
   }
   /**
-   * Answers `help`: the commands and states for AI agents, also while no device is connected. The `dm:*`
-   * commands are answered by the Device Manager.
+   * Answers `help` (the commands and states for AI agents, also while no device is connected) and the standard
+   * commands of the shared catalog. The `dm:*` commands are answered by the Device Manager.
    *
    * @param obj - Message
    */
   onMessage(obj) {
-    if ((obj == null ? void 0 : obj.command) === "help" && obj.callback) {
-      this.sendTo(obj.from, obj.command, { help: import_help.HELP, commands: import_help.COMMANDS }, obj.callback);
+    var _a;
+    if (!(obj == null ? void 0 : obj.command) || obj.command.startsWith("dm:")) {
+      return;
     }
+    if ((obj == null ? void 0 : obj.command) === "help") {
+      if (obj.callback) {
+        this.sendTo(obj.from, obj.command, { help: import_help.HELP, commands: import_help.COMMANDS }, obj.callback);
+      }
+      return;
+    }
+    if (!obj.callback && !((_a = import_help.COMMANDS.find((c) => c.command === obj.command)) == null ? void 0 : _a.write)) {
+      return;
+    }
+    void this.answerMessage(obj).then((answer) => {
+      if (obj.callback) {
+        this.sendTo(obj.from, obj.command, answer, obj.callback);
+      }
+    });
+  }
+  /**
+   * The standard commands of the shared catalog (family tv): getApps, launchApp, remote, power.
+   *
+   * @param obj - Message
+   */
+  async answerMessage(obj) {
+    const message = obj.message && typeof obj.message === "object" ? obj.message : {};
+    const apps = [...this.appsById].map(([id, app]) => ({ id, name: app.name, link: app.link }));
+    if (obj.command === "getApps") {
+      return { apps: apps.map(({ id, name }) => ({ id, name })) };
+    }
+    if (!["launchApp", "remote", "power"].includes(obj.command)) {
+      return { error: `Unknown command "${obj.command}"`, reason: "NOT_SUPPORTED" };
+    }
+    const devices = [...this.devices.values()].map((d) => ({ id: d.id, name: d.config.name || d.id, runtime: d }));
+    const found = (0, import_standard.pick)(devices, message.device, "device");
+    if ((0, import_standard.isCatalogError)(found)) {
+      return { ...found };
+    }
+    const device = found.runtime;
+    const answer = { ok: true, device: { id: found.id, name: found.name } };
+    try {
+      switch (obj.command) {
+        case "launchApp": {
+          const target = (0, import_standard.launchTargetOf)(apps, message.app);
+          if ((0, import_standard.isCatalogError)(target)) {
+            return { ...target };
+          }
+          await this.launch(device, target);
+          return { ...answer, app: target };
+        }
+        case "remote": {
+          const key = (0, import_standard.remoteKeyOf)(message.key);
+          if (!key) {
+            return { error: `Unknown key "${String(message.key)}"`, reason: "BAD_REQUEST" };
+          }
+          await this.sendKey(device, key);
+          return { ...answer, key };
+        }
+        case "power": {
+          if (typeof message.on !== "boolean") {
+            return { error: 'Missing "on" (true or false)', reason: "BAD_REQUEST" };
+          }
+          const on = message.on;
+          await this.setPower(
+            device,
+            on,
+            () => void this.setState(`${device.id}.power`, { val: on, ack: true })
+          );
+          return await this.waitForPower(device.id, on) ? { ...answer, on } : { ...answer, on, pending: true };
+        }
+        default:
+          return { error: `Unknown command "${obj.command}"`, reason: "NOT_SUPPORTED" };
+      }
+    } catch (e) {
+      const error = e.message;
+      return { error, reason: (0, import_standard.reasonOf)(error) };
+    }
+  }
+  /**
+   * Waits until the device reports the power state (state `power` with ack).
+   *
+   * @param id - Device id
+   * @param on - Wanted state
+   * @returns false after ANSWER_WAIT_MS
+   */
+  async waitForPower(id, on) {
+    for (const until = Date.now() + ANSWER_WAIT_MS; Date.now() < until; ) {
+      const state = await this.getStateAsync(`${id}.power`);
+      if ((state == null ? void 0 : state.ack) && state.val === on) {
+        return true;
+      }
+      await new Promise((resolve) => this.setTimeout(() => resolve(), 500));
+    }
+    return false;
   }
   // ------------------------------------------------------------------------------------------------------------
   // Admin messages (pairing, status)

@@ -18,6 +18,7 @@ import {
 } from './lib/certificate';
 import { PairingError, PairingSession } from './lib/pairing';
 import { RemoteConnection, resolveKeyCode } from './lib/remote';
+import { isCatalogError, launchTargetOf, pick, reasonOf, remoteKeyOf } from './lib/standard';
 import { ADB_STATES, DEVICE_STATES, KEY_BUTTONS, type StateDefinition } from './lib/states';
 import type { Timers } from './lib/timers';
 import { sendWakeOnLan, wolTargets } from './lib/wol';
@@ -70,6 +71,8 @@ const CERT_FILE = 'client-certificate.json';
 const ADB_KEY_FILE = 'adb-key.json';
 /** A device that stays unreachable this long is considered off (power=false, media idle). */
 const OFFLINE_GRACE_MS = 30_000;
+/** How long a message waits until the device reports the new power state, then it answers `pending` */
+const ANSWER_WAIT_MS = 15_000;
 
 /**
  * Texts returned to the admin UI (sendTo) and written to `<device>.info.status`, in all admin languages.
@@ -1233,15 +1236,110 @@ class Androidtv extends utils.Adapter {
     }
 
     /**
-     * Answers `help`: the commands and states for AI agents, also while no device is connected. The `dm:*`
-     * commands are answered by the Device Manager.
+     * Answers `help` (the commands and states for AI agents, also while no device is connected) and the standard
+     * commands of the shared catalog. The `dm:*` commands are answered by the Device Manager.
      *
      * @param obj - Message
      */
     private onMessage(obj: ioBroker.Message): void {
-        if (obj?.command === 'help' && obj.callback) {
-            this.sendTo(obj.from, obj.command, { help: HELP, commands: COMMANDS }, obj.callback);
+        if (!obj?.command || obj.command.startsWith('dm:')) {
+            return;
         }
+        if (obj?.command === 'help') {
+            if (obj.callback) {
+                this.sendTo(obj.from, obj.command, { help: HELP, commands: COMMANDS }, obj.callback);
+            }
+            return;
+        }
+        // commands with an effect also run without a callback
+        if (!obj.callback && !COMMANDS.find(c => c.command === obj.command)?.write) {
+            return;
+        }
+        void this.answerMessage(obj).then(answer => {
+            if (obj.callback) {
+                this.sendTo(obj.from, obj.command, answer, obj.callback);
+            }
+        });
+    }
+
+    /**
+     * The standard commands of the shared catalog (family tv): getApps, launchApp, remote, power.
+     *
+     * @param obj - Message
+     */
+    private async answerMessage(obj: ioBroker.Message): Promise<Record<string, unknown>> {
+        const message = (obj.message && typeof obj.message === 'object' ? obj.message : {}) as Record<string, unknown>;
+        const apps = [...this.appsById].map(([id, app]) => ({ id, name: app.name, link: app.link }));
+        if (obj.command === 'getApps') {
+            return { apps: apps.map(({ id, name }) => ({ id, name })) };
+        }
+        if (!['launchApp', 'remote', 'power'].includes(obj.command)) {
+            return { error: `Unknown command "${obj.command}"`, reason: 'NOT_SUPPORTED' };
+        }
+        const devices = [...this.devices.values()].map(d => ({ id: d.id, name: d.config.name || d.id, runtime: d }));
+        const found = pick(devices, message.device, 'device');
+        if (isCatalogError(found)) {
+            return { ...found };
+        }
+        const device = found.runtime;
+        const answer = { ok: true, device: { id: found.id, name: found.name } };
+        try {
+            switch (obj.command) {
+                case 'launchApp': {
+                    const target = launchTargetOf(apps, message.app);
+                    if (isCatalogError(target)) {
+                        return { ...target };
+                    }
+                    await this.launch(device, target);
+                    return { ...answer, app: target };
+                }
+                case 'remote': {
+                    const key = remoteKeyOf(message.key);
+                    if (!key) {
+                        return { error: `Unknown key "${String(message.key)}"`, reason: 'BAD_REQUEST' };
+                    }
+                    await this.sendKey(device, key);
+                    return { ...answer, key };
+                }
+                case 'power': {
+                    if (typeof message.on !== 'boolean') {
+                        return { error: 'Missing "on" (true or false)', reason: 'BAD_REQUEST' };
+                    }
+                    const on = message.on;
+                    await this.setPower(
+                        device,
+                        on,
+                        () => void this.setState(`${device.id}.power`, { val: on, ack: true }),
+                    );
+                    return (await this.waitForPower(device.id, on))
+                        ? { ...answer, on }
+                        : { ...answer, on, pending: true };
+                }
+                default:
+                    return { error: `Unknown command "${obj.command}"`, reason: 'NOT_SUPPORTED' };
+            }
+        } catch (e) {
+            const error = (e as Error).message;
+            return { error, reason: reasonOf(error) };
+        }
+    }
+
+    /**
+     * Waits until the device reports the power state (state `power` with ack).
+     *
+     * @param id - Device id
+     * @param on - Wanted state
+     * @returns false after ANSWER_WAIT_MS
+     */
+    private async waitForPower(id: string, on: boolean): Promise<boolean> {
+        for (const until = Date.now() + ANSWER_WAIT_MS; Date.now() < until;) {
+            const state = await this.getStateAsync(`${id}.power`);
+            if (state?.ack && state.val === on) {
+                return true;
+            }
+            await new Promise<void>(resolve => this.setTimeout(() => resolve(), 500));
+        }
+        return false;
     }
 
     // ------------------------------------------------------------------------------------------------------------

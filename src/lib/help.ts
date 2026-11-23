@@ -10,11 +10,20 @@ export interface HelpCommand {
     command: string;
     /** The command changes something (device, configuration) */
     write: boolean;
+    /** The command of the shared catalog it follows (ioBroker.assistant HELP.md), e.g. `tv.power` */
+    standard?: string;
 }
 
-/** Every command the instance answers: `help` in main.ts, the `dm:*` commands by the Device Manager (dm-utils) */
+/**
+ * Every command the instance answers: `help` and the standard commands in main.ts, the `dm:*` commands by the Device
+ * Manager (dm-utils)
+ */
 export const COMMANDS: HelpCommand[] = [
     { command: 'help', write: false },
+    { command: 'getApps', write: false, standard: 'tv.getApps' },
+    { command: 'launchApp', write: true, standard: 'tv.launchApp' },
+    { command: 'remote', write: true, standard: 'tv.remote' },
+    { command: 'power', write: true, standard: 'tv.power' },
     { command: 'dm:instanceInfo', write: false },
     { command: 'dm:loadDevices', write: false },
     { command: 'dm:deviceInfo', write: false },
@@ -30,10 +39,19 @@ export const COMMANDS: HelpCommand[] = [
 
 export const HELP = `ioBroker.androidtv: controls NVIDIA SHIELD, Android TV / Google TV and Amazon Fire TV devices:
 on/off, starting apps, remote keys, typing text, mute, and shows the running app and (with ADB) what is playing.
-Everything is done by writing the states of a device; there are no commands for that.
+The states of a device do everything; the commands getApps, launchApp, remote and power follow the shared catalog of
+ioBroker (family tv) and answer whether it worked.
 
-Commands (sendTo androidtv.0):
+Commands (sendTo androidtv.0; device = the name or ID of a TV, may be left out if there is only one;
+errors answer {error, reason}: NOT_FOUND or AMBIGUOUS with candidates, NOT_CONNECTED, BAD_REQUEST):
 - help: this text.
+- getApps {}: the app favorites of the settings: {apps: [{id, name}]}.
+- launchApp {app, device?}: starts an app: the name of an app favorite, a web link or an app ID (see launchApp
+  below) -> {ok, device: {id, name}, app}.
+- remote {key, device?}: one key: up, down, left, right, ok, back, home, menu, play, pause, volumeUp, volumeDown,
+  mute, channelUp, channelDown, 0-9, the other keys.<id> or a name of sendKey -> {ok, device, key}.
+- power {on, device?}: true / false like the state power; answers when the TV reports it ({ok, device, on}) or after
+  15 s with pending: true.
 - dm:instanceInfo, dm:loadDevices, dm:deviceInfo, dm:deviceStatus, dm:deviceDetails, dm:instanceAction,
   dm:deviceAction, dm:deviceControl, dm:deviceControlState, dm:deviceLoadProgress, dm:actionProgress: the
   Device Manager of admin (adding, pairing, removing devices), for the settings, not for agents.
