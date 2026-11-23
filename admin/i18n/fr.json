@@ -1,6 +1,6 @@
 {
     "Devices": "Appareils",
-    "devicesHelp": "Ajoutez chaque téléviseur avec « Ajouter un appareil ». Chaque carte affiche l'état et l'application en cours ; ses boutons permettent d'appairer, de reconnecter, de modifier les paramètres ou de supprimer l'appareil. Les modifications faites ici sont enregistrées immédiatement – pour modifier ensuite autre chose sur cette page, fermez-la d'abord sans enregistrer et rouvrez-la.",
+    "devicesHelp": "Ajoutez chaque téléviseur avec « Ajouter un appareil ». Chaque carte affiche l'état et l'application en cours ; ses boutons permettent d'appairer, de reconnecter, de modifier les paramètres ou de supprimer l'appareil. Les modifications faites ici sont enregistrées immédiatement – pour modifier ensuite autre chose sur cette page, fermez-la d'abord sans enregistrer et rouvrez-la. L’interrupteur de la carte active/désactive seulement l’appareil dans l’adaptateur, pas le téléviseur – la marche/arrêt du téléviseur se trouve dans les commandes rapides (bouton manette).",
     "Open the step-by-step guide": "Ouvrir le guide pas à pas",
     "Name": "Nom",
     "App favorites": "Applications favorites",

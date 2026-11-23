@@ -1,6 +1,6 @@
 {
     "Devices": "Devices",
-    "devicesHelp": "Add each TV with “Add device”. Every card shows the status and the running app; its buttons pair, reconnect, change the settings or remove the device. Changes made here are saved immediately – if you want to change something else on this page afterwards, close it without saving and open it again first.",
+    "devicesHelp": "Add each TV with “Add device”. Every card shows the status and the running app; its buttons pair, reconnect, change the settings or remove the device. Changes made here are saved immediately – if you want to change something else on this page afterwards, close it without saving and open it again first. The switch on a card only turns the device on or off in the adapter, not the TV itself – the TV is switched on/off in the quick controls (controller button).",
     "Open the step-by-step guide": "Open the step-by-step guide",
     "Name": "Name",
     "App favorites": "App favorites",

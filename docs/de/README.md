@@ -54,7 +54,7 @@ Diese Datenpunkte nutzt du in Skripten, Blockly, Szenen oder Visualisierungen wi
 
 ### Reiter Geräte
 
-Jedes Gerät ist eine Karte mit Status und laufender App. Der Schalter aktiviert/deaktiviert das Gerät, der Controller-Knopf öffnet die Schnellsteuerung (Ein/Aus, Stumm, Lautstärke, Wiedergabe/Pause, Startseite), weitere Knöpfe koppeln, verbinden neu, ändern die Einstellungen oder entfernen das Gerät. Änderungen werden sofort gespeichert und starten die Instanz neu – die Einstellungsseite danach ohne Speichern schließen, bevor du dort etwas anderes änderst.
+Jedes Gerät ist eine Karte mit Status und laufender App. Der Schalter aktiviert/deaktiviert das Gerät im Adapter (er schaltet nicht den Fernseher; die Datenpunkte bleiben erhalten), der Controller-Knopf öffnet die Schnellsteuerung (Ein/Aus, Stumm, Lautstärke, Wiedergabe/Pause, Startseite), weitere Knöpfe koppeln, verbinden neu, ändern die Einstellungen oder entfernen das Gerät. Änderungen werden sofort gespeichert und starten die Instanz neu – die Einstellungsseite danach ohne Speichern schließen, bevor du dort etwas anderes änderst.
 
 ### App-Favoriten
 

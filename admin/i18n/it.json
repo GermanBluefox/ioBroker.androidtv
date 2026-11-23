@@ -1,6 +1,6 @@
 {
     "Devices": "Dispositivi",
-    "devicesHelp": "Aggiungi ogni televisore con «Aggiungi dispositivo». Ogni scheda mostra lo stato e l'app in esecuzione; i suoi pulsanti associano, riconnettono, modificano le impostazioni o rimuovono il dispositivo. Le modifiche fatte qui vengono salvate subito – se poi vuoi modificare altro in questa pagina, chiudila prima senza salvare e riaprila.",
+    "devicesHelp": "Aggiungi ogni televisore con «Aggiungi dispositivo». Ogni scheda mostra lo stato e l'app in esecuzione; i suoi pulsanti associano, riconnettono, modificano le impostazioni o rimuovono il dispositivo. Le modifiche fatte qui vengono salvate subito – se poi vuoi modificare altro in questa pagina, chiudila prima senza salvare e riaprila. L’interruttore sulla scheda attiva/disattiva solo il dispositivo nell’adattatore, non il televisore: l’accensione/spegnimento è nei comandi rapidi (pulsante controller).",
     "Open the step-by-step guide": "Apri la guida passo passo",
     "Name": "Nome",
     "App favorites": "App preferite",

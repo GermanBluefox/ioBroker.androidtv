@@ -1,6 +1,6 @@
 {
     "Devices": "Dispositivos",
-    "devicesHelp": "Añade cada televisor con «Añadir dispositivo». Cada tarjeta muestra el estado y la app en uso; sus botones emparejan, reconectan, cambian los ajustes o eliminan el dispositivo. Los cambios hechos aquí se guardan de inmediato – si después quieres cambiar otra cosa en esta página, ciérrala primero sin guardar y vuelve a abrirla.",
+    "devicesHelp": "Añade cada televisor con «Añadir dispositivo». Cada tarjeta muestra el estado y la app en uso; sus botones emparejan, reconectan, cambian los ajustes o eliminan el dispositivo. Los cambios hechos aquí se guardan de inmediato – si después quieres cambiar otra cosa en esta página, ciérrala primero sin guardar y vuelve a abrirla. El interruptor de la tarjeta solo activa o desactiva el dispositivo en el adaptador, no el televisor: el televisor se enciende/apaga en los controles rápidos (botón del mando).",
     "Open the step-by-step guide": "Abrir la guía paso a paso",
     "Name": "Nombre",
     "App favorites": "Apps favoritas",

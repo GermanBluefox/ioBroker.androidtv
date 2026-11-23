@@ -1,6 +1,6 @@
 {
     "Devices": "Urządzenia",
-    "devicesHelp": "Każdy telewizor dodaj przyciskiem „Dodaj urządzenie”. Każda karta pokazuje status i uruchomioną aplikację; jej przyciski służą do parowania, ponownego łączenia, zmiany ustawień lub usuwania urządzenia. Zmiany wprowadzone tutaj są zapisywane od razu – jeśli potem chcesz zmienić coś innego na tej stronie, najpierw zamknij ją bez zapisywania i otwórz ponownie.",
+    "devicesHelp": "Każdy telewizor dodaj przyciskiem „Dodaj urządzenie”. Każda karta pokazuje status i uruchomioną aplikację; jej przyciski służą do parowania, ponownego łączenia, zmiany ustawień lub usuwania urządzenia. Zmiany wprowadzone tutaj są zapisywane od razu – jeśli potem chcesz zmienić coś innego na tej stronie, najpierw zamknij ją bez zapisywania i otwórz ponownie. Przełącznik na karcie włącza/wyłącza tylko urządzenie w adapterze, a nie telewizor – telewizor włącza się/wyłącza w szybkim sterowaniu (przycisk kontrolera).",
     "Open the step-by-step guide": "Otwórz instrukcję krok po kroku",
     "Name": "Nazwa",
     "App favorites": "Ulubione aplikacje",

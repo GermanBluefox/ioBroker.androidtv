@@ -1,6 +1,6 @@
 {
     "Devices": "Geräte",
-    "devicesHelp": "Jeden Fernseher mit „Gerät hinzufügen“ anlegen. Jede Karte zeigt Status und laufende App; mit ihren Knöpfen wird gekoppelt, neu verbunden, die Einstellungen geändert oder das Gerät entfernt. Änderungen hier werden sofort gespeichert – wer danach auf dieser Seite noch etwas anderes ändern möchte, schließt sie vorher ohne Speichern und öffnet sie neu.",
+    "devicesHelp": "Jeden Fernseher mit „Gerät hinzufügen“ anlegen. Jede Karte zeigt Status und laufende App; mit ihren Knöpfen wird gekoppelt, neu verbunden, die Einstellungen geändert oder das Gerät entfernt. Änderungen hier werden sofort gespeichert – wer danach auf dieser Seite noch etwas anderes ändern möchte, schließt sie vorher ohne Speichern und öffnet sie neu. Der Schalter auf der Karte aktiviert/deaktiviert nur das Gerät im Adapter, nicht den Fernseher – Ein/Aus steht in der Schnellsteuerung (Controller-Knopf).",
     "Open the step-by-step guide": "Schritt-für-Schritt-Anleitung öffnen",
     "Name": "Name",
     "App favorites": "App-Favoriten",

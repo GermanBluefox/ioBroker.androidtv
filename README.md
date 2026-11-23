@@ -63,7 +63,7 @@ Use them in scripts, Blockly, scenes or visualizations like any other data point
 
 ### Devices tab
 
-Every device is a card with status and the running app. The switch enables/disables the device, the controller button opens quick controls (on/off, mute, volume, play/pause, home), further buttons pair, reconnect, change the settings or remove the device. Changes are saved immediately and restart the instance – close the settings page afterwards without saving before you change anything else there.
+Every device is a card with status and the running app. The switch enables/disables the device in the adapter (it does not switch the TV; data points are kept), the controller button opens quick controls (on/off, mute, volume, play/pause, home), further buttons pair, reconnect, change the settings or remove the device. Changes are saved immediately and restart the instance – close the settings page afterwards without saving before you change anything else there.
 
 ### App favorites
 
@@ -153,6 +153,7 @@ Bugs and ideas: [issues](https://github.com/Schimi1983/ioBroker.androidtv/issues
 - (Schimi) `currentAppName` shows "ORF ON" on Fire TV
 - (Schimi) Clearer log hint when an app ID is started without ADB
 - (Schimi) Setup hint: some TVs (e.g. Philips) also need USB debugging
+- (Schimi) Devices tab: explains that the switch on a card enables/disables the device in the adapter, not the TV
 - (Schimi) Playback info: if several apps report playback, the app in the foreground wins; changes of the playback info are written to the debug log
 
 ### 0.3.0 (2026-11-19)
